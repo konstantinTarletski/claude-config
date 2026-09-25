@@ -46,6 +46,24 @@ Windows-git'ом, Java — из sdkman (см. `environment.md`). **Запасн�
 `environment.md`. `bash gradlew` CRLF не лечит (CRLF во всех строках) — нужен `eol=lf` для `gradlew`.
 Временный запасной вариант — JDK, скачанные IntelliJ (`C:\Users\<user>\.jdks\`), через `cmd.exe`.
 
+## sdkman: первая установленная Java становится версией по умолчанию
+
+**Симптом:** после `sdk install java 17…` (даже с ответом «n» на «set as default?») во всех шеллах
+`java` — 17, хотя системная была другой.
+**Причина:** первая установленная версия кандидата sdkman всегда делается `current`.
+**Как правильно:** зарегистрировать системную Java как локальную версию и вернуть её по умолчанию:
+`sdk install java 25-system /usr/lib/jvm/<jdk>` → `sdk default java 25-system`. Версию проекта —
+через `.sdkmanrc` (+ `sdkman_auto_env=true`).
+
+## WSL-симлинки на `/mnt/c` не видны Windows
+
+**Симптом:** `ln -s` из WSL на диске C: работает в WSL, а Windows-программа пишет «The file cannot be
+accessed by the system».
+**Причина:** WSL создаёт свой тип симлинка; настоящий NTFS-симлинк (`mklink`) требует прав
+администратора или Developer Mode.
+**Как правильно:** симлинки — только для того, что читается из WSL (Claude Code). Если файл нужен
+Windows-программе — копия, не симлинк.
+
 ## Переменная из `~/.bashrc` пустая в текущей сессии
 
 **Симптом:** токен дописан в `~/.bashrc`, а `echo "$VAR"` в уже открытом терминале / сессии

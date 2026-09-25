@@ -30,7 +30,7 @@ home/
 ## Развернуть на новой машине
 
 ```bash
-git clone https://github.com/konstantinTarletski/claude-config.git /mnt/c/code/claude-config
+git clone git@github.com:konstantinTarletski/claude-config.git /mnt/c/code/claude-config
 cd /mnt/c/code/claude-config
 ./install.sh --dry-run   # показать, что будет сделано
 ./install.sh
@@ -38,6 +38,21 @@ cd /mnt/c/code/claude-config
 
 Повторный запуск безопасен. Существующий файл, совпадающий с копией, заменяется симлинком;
 отличающийся — сохраняется как `<файл>.bak-<дата>`.
+
+## Разрешения (`~/.claude/settings.json`)
+
+Сам файл сюда не симлинкается — Claude Code переписывает его при `/model`, `/config` и т.п. Блок
+`permissions` лежит копией в `home/settings.permissions.json` — на новой машине вставить его в
+`~/.claude/settings.json`. Что в нём:
+
+- `Edit(...)` для заметок (`.claude/**`, `CLAUDE.md` проектов, `claude-config`, `~/.claude/personal`) — пишутся без
+  запроса;
+- `Bash(...)` для команд только на чтение (`git status/log/diff/show`, `ls`, `grep`, `head`, `tail`, `sed -n`,
+  Windows-git `status/diff/log/fetch`, `curl` к Jira с токеном);
+- `ask` для `.claude/settings*.json` проектов — чтобы ассистент не мог сам себе расширить разрешения.
+
+Поменял разрешения в `~/.claude/settings.json` — обновить копию:
+`python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); json.dump({'permissions': d['permissions']}, open('home/settings.permissions.json','w'), indent=2, ensure_ascii=False)"`.
 
 ## Ограничения
 

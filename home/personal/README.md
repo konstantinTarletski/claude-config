@@ -17,27 +17,12 @@
 
 ## Перенос на новую машину
 
-```bash
-cp -r personal ~/.claude/personal
-cp CLAUDE.md ~/.claude/CLAUDE.md     # или дописать импорты в существующий
-```
-
-Скиллы подключить симлинком (Claude ищет их в `~/.claude/skills/`):
+Всё это лежит в репозитории `claude-config` (`home/personal/`), в `~/.claude` — симлинки:
 
 ```bash
-ln -s ../personal/skills/estimate ~/.claude/skills/estimate
-ln -s ../personal/skills/ticket ~/.claude/skills/ticket
-# или просто ./install.sh из claude-config
+git clone git@github.com:konstantinTarletski/claude-config.git /mnt/c/code/claude-config
+cd /mnt/c/code/claude-config && ./install.sh
 ```
 
-`~/.claude/CLAUDE.md` должен содержать:
-
-```
-@~/.claude/personal/structure.md
-@~/.claude/personal/communication.md
-@~/.claude/personal/workflow.md
-@~/.claude/personal/gotchas.md
-@~/.claude/personal/environment.md
-```
-
-Удобно держать папку в личном git-репозитории — тогда перенос = `git clone`.
+`install.sh` создаёт `~/.claude/CLAUDE.md`, `~/.claude/personal` и `~/.claude/skills/<имя>` для каждого
+скилла из `skills/`. Подробности — `README.md` в корне репозитория.

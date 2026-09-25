@@ -19,16 +19,17 @@
 Нужной версии нет — поставить (`sdk install java 17.0.x-amzn`, `nvm install 18`) и сказать об этом.
 Дистрибутив Java по умолчанию — тот же, что у команды/IDE (часто Corretto `-amzn` или Temurin `-tem`).
 
-Закрепить версию локально: `.sdkmanrc` (`sdk env init`) и `.nvmrc` в корне репозитория — **в
-`.gitignore`**, если в проекте их нет. Автопереключение по `cd` — `sdkman_auto_env=true` в
+Закрепить версию локально: `.sdkmanrc` (`sdk env init`) и `.nvmrc` в корне репозитория, скрыть через
+`.git/info/exclude`, если в проекте их нет (если `.nvmrc` лежит в git проекта — пользоваться им). Автопереключение по `cd` — `sdkman_auto_env=true` в
 `~/.sdkman/etc/config`; для nvm — `nvm use` в начале команды.
 
 ## Что нужно, чтобы свои Java/Node работали на репозитории в `/mnt/c/...`
 
 - **CRLF в скриптах** (`gradlew`, `mvnw`, `*.sh`): если репозиторий выкачан Windows-git'ом с
   `autocrlf=true` — локально, без коммита, прописать в `.git/info/attributes`:
-  `gradlew text eol=lf` (и т.п.), затем пересоздать файл Windows-git'ом
-  (`cmd.exe /c "git checkout -- gradlew"`). После этого `./gradlew` работает из WSL.
+  `gradlew text eol=lf` (и т.п.), затем пересоздать файл Windows-git'ом:
+  `cmd.exe /c "del gradlew && git checkout -- gradlew"` — просто `git checkout` файл не перепишет,
+  git считает его неизменённым. После этого `./gradlew` работает из WSL.
 - **Доступы сборки** (Artifactory/Nexus/npm registry) — в WSL-профиле: `~/.gradle/gradle.properties`,
   `~/.m2/settings.xml`, `~/.npmrc`. Секреты туда переносит пользователь сам; ассистент их не читает
   и не печатает.
