@@ -207,3 +207,23 @@ constant expression».
 **Причина:** `/x/…` редиректит через `tinyurl.action`, id в самой ссылке не виден.
 **Как правильно:** `curl -sSL -o /dev/null -w '%{url_effective}' -H "Authorization: Bearer …" <ссылка>` —
 в итоговом URL `/pages/<id>/`.
+
+## Angular `effect`: зависимость от сигналов, прочитанных в вызванном методе
+
+**Симптом:** пагинация «не работает»: номер страницы меняется, данные — нет; в Network на один клик два запроса —
+нужный `offset` и следом `offset=0`.
+**Причина:** `effect` отслеживает **все** сигналы, прочитанные синхронно во время его выполнения, в том числе внутри
+вызванных методов. `effect(() => { const id = this.id(); this.page.set(1); this.fetch(id); })`, где `fetch` читает
+`this.page()`, зависит и от `page`: смена страницы перезапускает эффект, тот сбрасывает её на 1 и перезапрашивает.
+Вход компонента за один цикл 1 → 2 → 1, Angular изменения не видит, а UI-библиотека уже показывает 2.
+**Как правильно:** оставить в эффекте только нужные зависимости, остальное — в `untracked(() => …)`:
+`effect(() => { const id = this.id(); untracked(() => { this.page.set(1); this.fetch(id); }); })`.
+Запись сигнала (`set`) зависимостью не делает — только чтение.
+
+## Тест Angular-компонента с ng-zorro `nz-tabset`: `NG05105 @tabSwitchMotion`
+
+**Симптом:** `fixture.detectChanges()` → `NG05105: Unexpected synthetic property @tabSwitchMotion found`.
+**Причина:** компоненты ng-zorro используют анимации Angular, а в `TestBed` провайдер анимаций не подключён.
+**Как правильно:** в `providers` теста — `provideNoopAnimations()` из `@angular/platform-browser/animations`.
+Эффекты компонента (`effect` в конструкторе) выполняются при change detection — без `fixture.detectChanges()`
+они в тесте не сработают.
