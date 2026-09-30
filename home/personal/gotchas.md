@@ -227,3 +227,14 @@ constant expression».
 **Как правильно:** в `providers` теста — `provideNoopAnimations()` из `@angular/platform-browser/animations`.
 Эффекты компонента (`effect` в конструкторе) выполняются при change detection — без `fixture.detectChanges()`
 они в тесте не сработают.
+
+## MapStruct молча не маппит поле (`id` у сущности из чужого jar)
+
+**Симптом:** в ответе поле (часто `id`) всегда `null`, сборка зелёная.
+**Причина:** неразмеченное поле цели по умолчанию — только warning (`unmappedTargetPolicy = WARN`), а `gradle -q` /
+CI его не показывают. Типичный случай — сущность из jar-библиотеки, чей родитель (с Lombok-геттером `getId`)
+MapStruct при неявном сопоставлении не увидел.
+**Как правильно:** после добавления маппера открыть `build/generated/sources/annotationProcessor/**/XxxMapperImpl.java`
+и проверить, что все поля выставляются; для полей родителя — явный `@Mapping(source = "id", target = "id")`.
+Юнит-тест маппера — через сгенерированный `new XxxMapperImpl()` (`Mappers.getMapper` требует `mapstruct` в test
+classpath, его там может не быть).

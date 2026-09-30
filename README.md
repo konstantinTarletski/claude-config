@@ -16,6 +16,7 @@ home/
     ├── environment.md         Java/Node — свои из WSL (sdkman, nvm)
     ├── gotchas.md             общие грабли (WSL, CRLF, инструменты)
     ├── templates/ticket.md    шаблон документа по задаче
+    ├── statusline/claude-pace.sh  строка состояния: квота 5ч/7д и темп (см. ниже)
     └── skills/                → ~/.claude/skills/<имя>
         ├── estimate/          /estimate <KEY>
         └── ticket/            /ticket <KEY>
@@ -53,6 +54,28 @@ cd /mnt/c/code/claude-config
 
 Поменял разрешения в `~/.claude/settings.json` — обновить копию:
 `python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); json.dump({'permissions': d['permissions']}, open('home/settings.permissions.json','w'), indent=2, ensure_ascii=False)"`.
+
+## Строка состояния (claude-pace)
+
+[claude-pace](https://github.com/Astro-Han/claude-pace) (MIT) — однофайловый bash-скрипт: модель и контекст, ветка
+и дифф, расход квоты за 5 часов и 7 дней и «темп» (успеваю ли в лимит). Сети не использует, пишет только кеш
+в `~/.cache/claude-pace`. Копия скрипта — `home/personal/statusline/claude-pace.sh` (release от 30.09.2026,
+sha256 `0dd4fecb…a020b`), доступна как `~/.claude/personal/statusline/claude-pace.sh` через симлинк `personal`.
+
+На новой машине:
+
+```bash
+sudo apt-get install -y jq      # единственная зависимость; без неё в строке «[needs jq]»
+```
+
+и в `~/.claude/settings.json` (сам файл не симлинкается — см. выше):
+
+```json
+"statusLine": { "type": "command", "command": "~/.claude/personal/statusline/claude-pace.sh" }
+```
+
+Обновить скрипт: скачать `https://github.com/Astro-Han/claude-pace/releases/latest/download/claude-pace.sh` во
+временную папку, просмотреть дифф с текущей копией (нет ли сети, `eval`, записи вне кеша) и только потом заменить.
 
 ## Ограничения
 
