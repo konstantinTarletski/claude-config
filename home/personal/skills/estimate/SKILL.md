@@ -65,6 +65,35 @@ description: Оценить задачу в часах — три цифры (с
 которое я тратил сам вне сессии (локальный запуск, ручная проверка, коммит) — спросить, если
 не видно.
 
+Скрипт: разбор — от сообщения со ссылкой на тикет до «делай», реализация — от «делай» до конца. Подставить
+`<проект>` (каталог в `~/.claude/projects/`) и маркеры — фрагменты текста сообщений пользователя:
+
+```bash
+python3 - <<'EOF'
+import json, glob, os
+from datetime import datetime
+f = max(glob.glob(os.path.expanduser('~/.claude/projects/<проект>/*.jsonl')), key=os.path.getmtime)
+rows = []
+for line in open(f, encoding='utf-8'):
+    try: d = json.loads(line)
+    except ValueError: continue
+    if not d.get('timestamp'): continue
+    t = datetime.fromisoformat(d['timestamp'].replace('Z', '+00:00'))
+    c = d.get('message', {}).get('content') if d.get('type') == 'user' else ''
+    txt = c if isinstance(c, str) else ' '.join(x.get('text', '') for x in c if isinstance(x, dict)) if isinstance(c, list) else ''
+    rows.append((t, txt))
+rows.sort(key=lambda r: r[0])
+def active(a, b):  # паузы > 20 мин не считаются
+    ts = [t for t, _ in rows if a <= t <= b]
+    return round(sum((q - p).total_seconds() for p, q in zip(ts, ts[1:]) if (q - p).total_seconds() < 1200) / 3600, 2)
+start = next(t for t, x in rows if '<KEY>' in x and 'browse' in x)   # ссылка на тикет
+go = next(t for t, x in rows if t > start and '<маркер «делай»>' in x)
+print('разбор', active(start, go), 'реализация', active(go, rows[-1][0]))
+EOF
+```
+
+Фоновые прогоны (сборка, тесты) идут без записей в сессию — их длительность добавить отдельно, если ждали.
+
 ## Где хранить
 
 В документе по задаче (см. `workflow.md`), раздел «Оценка»: все три цифры, таблица прецедентов,

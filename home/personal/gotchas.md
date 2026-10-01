@@ -208,6 +208,42 @@ constant expression».
 **Как правильно:** `curl -sSL -o /dev/null -w '%{url_effective}' -H "Authorization: Bearer …" <ссылка>` —
 в итоговом URL `/pages/<id>/`.
 
+## Confluence REST: что не видно в `body.storage`
+
+**Симптом:** в выгрузке страницы нет части содержимого, которая видна в браузере.
+**Причина:** (1) диаграммы (draw.io и т. п.) и картинки — не в теле, а **вложениями** (`.drawio.svg`, `.png`, `.jpg`);
+(2) тела блоков кода (`ac:structured-macro name="code"`) — в `<![CDATA[…]]>`, при вырезании тегов пропадают;
+(3) дочерние страницы в тело не входят.
+**Как правильно:** вложения — `/rest/api/content/<id>/child/attachment?expand=version` (смотреть свежие по дате),
+текст из `.drawio.svg` — регуляркой по `>([^<>]+)<`, картинку `.jpg` — открыть; код-блоки — вытащить CDATA
+(`re.findall(r'<!\[CDATA\[(.*?)\]\]>', body, re.S)`); подстраницы — `/rest/api/content/<id>/child/page`, предки —
+`?expand=ancestors`.
+
+## Jira REST: история задачи, связанные PR, задачи эпика
+
+**Симптом:** нужно больше, чем описание и комментарии: кто и когда менял статус, есть ли PR, что ещё в эпике.
+**Как правильно:** история статусов и полей — `/rest/api/2/issue/<KEY>?expand=changelog` (автор и время каждой
+смены); связанные PR/ветки/сборки — `/rest/dev-status/latest/issue/summary?issueId=<id>` (числовой id из
+`?fields=id`; состояние PR, но не комментарии ревью); задачи эпика — `/rest/api/2/search` с
+`jql="Epic Link" = <EPIC>` (в новых Jira — `parent = <EPIC>`).
+
+## Bitbucket: комментарии PR — только REST/UI, не SSH
+
+**Симптом:** нужно прочитать ревью PR, есть SSH-ключ — не помогает; REST без авторизации — `401`.
+**Причина:** SSH даёт только git (код, ветки); комментарии и статусы PR хранятся в Bitbucket, не в git.
+**Как правильно:** HTTP access token (только чтение) в переменной окружения →
+`/rest/api/1.0/projects/<P>/repos/<R>/pull-requests/<N>/activities`; нет токена — попросить у пользователя
+скриншот/текст комментариев. SSH-ключи не трогать (`workflow.md` → «Секреты не читать»).
+
+## WSL2 не видит `localhost` Windows
+
+**Симптом:** приложение запущено в Windows (IntelliJ, Docker Desktop), а из WSL `curl localhost:8080` →
+`Couldn't connect`; со стороны Windows (`cmd.exe /c "curl …"`) — `200`.
+**Причина:** WSL2 по умолчанию в NAT-сети: `localhost` в WSL — это сама VM, не Windows.
+**Как правильно:** запросы к такому сервису делать со стороны Windows — `cmd.exe /c "curl …"`, Windows-нода
+(`cmd.exe /c "npm run …"` — например, скачать OpenAPI-спеку с локального бэкенда). Постоянно — режим
+`networkingMode=mirrored` в `%UserProfile%\.wslconfig` (меняет пользователь, нужен `wsl --shutdown`).
+
 ## Angular `effect`: зависимость от сигналов, прочитанных в вызванном методе
 
 **Симптом:** пагинация «не работает»: номер страницы меняется, данные — нет; в Network на один клик два запроса —
