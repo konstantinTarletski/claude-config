@@ -1,5 +1,7 @@
 # Окружение: Java и Node — свои, из WSL
 
+Открывать при настройке окружения: выбор версии Java/Node, первый запуск проекта из WSL.
+
 Работаем из WSL, поэтому **JDK и Node берём из WSL**, а не Windows-версии через `cmd.exe`.
 Версии переключаем менеджерами:
 
@@ -25,11 +27,7 @@
 
 ## Что нужно, чтобы свои Java/Node работали на репозитории в `/mnt/c/...`
 
-- **CRLF в скриптах** (`gradlew`, `mvnw`, `*.sh`): если репозиторий выкачан Windows-git'ом с
-  `autocrlf=true` — локально, без коммита, прописать в `.git/info/attributes`:
-  `gradlew text eol=lf` (и т.п.), затем пересоздать файл Windows-git'ом:
-  `cmd.exe /c "del gradlew && git checkout -- gradlew"` — просто `git checkout` файл не перепишет,
-  git считает его неизменённым. После этого `./gradlew` работает из WSL.
+- **CRLF в скриптах** (`gradlew`, `mvnw`, `*.sh`) — `gotchas/java-gradle.md` → «`./gradlew` в WSL».
 - **Доступы сборки** (Artifactory/Nexus/npm registry) — в WSL-профиле: `~/.gradle/gradle.properties`,
   `~/.m2/settings.xml`, `~/.npmrc`. Секреты туда переносит пользователь сам; ассистент их не читает
   и не печатает.
@@ -40,7 +38,7 @@
 
 Windows-JDK / Windows-ноду через `cmd.exe` — только временно, пока окружение в WSL не готово, и с
 явным сообщением пользователю, чего не хватает (версия в sdkman/nvm, доступы, CRLF). Конкретные
-обходы — в `gotchas.md`.
+обходы — в `gotchas/`.
 
 ## На будущее
 

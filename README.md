@@ -6,23 +6,10 @@
 
 ## Что где
 
-```
-home/
-├── CLAUDE.md                  → ~/.claude/CLAUDE.md   (@-импорты personal/*.md)
-└── personal/                  → ~/.claude/personal
-    ├── structure.md           что где лежит и что куда писать
-    ├── communication.md       язык, объяснения через код, вопросы
-    ├── workflow.md            дисциплина изменений, документ по задаче
-    ├── environment.md         Java/Node — свои из WSL (sdkman, nvm)
-    ├── gotchas.md             общие грабли (WSL, CRLF, инструменты)
-    ├── templates/ticket.md    шаблон документа по задаче
-    ├── statusline/claude-pace.sh  строка состояния: квота 5ч/7д и темп (см. ниже)
-    └── skills/                → ~/.claude/skills/<имя>
-        ├── commit-message/    /commit-message [длинный] [<KEY>]
-        ├── estimate/          /estimate <KEY>
-        ├── review-lessons/    /review-lessons — чек-лист из замечаний ревью
-        └── ticket/            /ticket <KEY>
-```
+Дерево файлов с размерами и назначением — в [`home/CLAUDE.md`](home/CLAUDE.md) (единственное место, обновляется при
+каждом изменении). Коротко: `home/CLAUDE.md` → `~/.claude/CLAUDE.md`, `home/personal/` → `~/.claude/personal`
+(`rules/`, `code-rules/`, `gotchas/` — подключаются `@`-импортами; `skills/` → `~/.claude/skills/<имя>`; `templates/` —
+документ задачи и заготовка нового проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (с разделом «Задачи» — параметры для `/ticket`),
 `.claude/gotchas.md`, документы по задачам `.claude/tickets/<KEY>.md`, `.sdkmanrc` / `.nvmrc` —
