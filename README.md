@@ -18,6 +18,7 @@ home/
     ├── templates/ticket.md    шаблон документа по задаче
     ├── statusline/claude-pace.sh  строка состояния: квота 5ч/7д и темп (см. ниже)
     └── skills/                → ~/.claude/skills/<имя>
+        ├── commit-message/    /commit-message [длинный] [<KEY>]
         ├── estimate/          /estimate <KEY>
         └── ticket/            /ticket <KEY>
 ```
