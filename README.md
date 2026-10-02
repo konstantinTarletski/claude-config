@@ -20,6 +20,7 @@ home/
     └── skills/                → ~/.claude/skills/<имя>
         ├── commit-message/    /commit-message [длинный] [<KEY>]
         ├── estimate/          /estimate <KEY>
+        ├── review-lessons/    /review-lessons — чек-лист из замечаний ревью
         └── ticket/            /ticket <KEY>
 ```
 

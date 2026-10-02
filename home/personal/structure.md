@@ -36,7 +36,7 @@
 │   ├── gotchas.md                # общие грабли — не про конкретный проект
 │   ├── communication.md          # общение со мной
 │   ├── environment.md            # Java/Node — свои из WSL (sdkman, nvm)
-│   ├── skills/<имя>/SKILL.md     # общие скиллы (estimate, ticket, commit-message); симлинк в ~/.claude/skills/
+│   ├── skills/<имя>/SKILL.md     # общие скиллы (estimate, ticket, commit-message, review-lessons); симлинк в ~/.claude/skills/
 │   ├── templates/ticket.md       # шаблон документа по задаче
 │   └── workflow.md               # как работаем над задачами
 └── projects/<проект>/memory/     # память ассистента по проекту (личный контекст)

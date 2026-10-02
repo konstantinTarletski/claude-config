@@ -284,16 +284,18 @@ building failed`, а браузер открывает адрес без оши�
 Эффекты компонента (`effect` в конструкторе) выполняются при change detection — без `fixture.detectChanges()`
 они в тесте не сработают.
 
-## MapStruct молча не маппит поле (`id` у сущности из чужого jar)
+## MapStruct: как проверить, что поле маппится
 
-**Симптом:** в ответе поле (часто `id`) всегда `null`, сборка зелёная.
-**Причина:** неразмеченное поле цели по умолчанию — только warning (`unmappedTargetPolicy = WARN`), а `gradle -q` /
-CI его не показывают. Типичный случай — сущность из jar-библиотеки, чей родитель (с Lombok-геттером `getId`)
-MapStruct при неявном сопоставлении не увидел.
-**Как правильно:** после добавления маппера открыть `build/generated/sources/annotationProcessor/**/XxxMapperImpl.java`
-и проверить, что все поля выставляются; для полей родителя — явный `@Mapping(source = "id", target = "id")`.
-Юнит-тест маппера — через сгенерированный `new XxxMapperImpl()` (`Mappers.getMapper` требует `mapstruct` в test
-classpath, его там может не быть).
+**Симптом:** кажется, что поле (например, `id`) в сгенерированном маппере не выставляется, и хочется добавить явный
+`@Mapping(source = "x", target = "x")` — а он лишний (ревьюер спросит «зачем»).
+**Причина:** (1) MapStruct пишет в цель через **fluent-метод**, если он есть (`target.id( entity.getId() )`, так у
+моделей openapi-generator), а не `setId(...)` — поиск по `setId` ничего не найдёт; (2) неразмеченное поле цели — только
+warning (`Unmapped target property: "x"`), а `gradle -q` его скрывает.
+**Как правильно:** открыть `build/generated/sources/annotationProcessor/**/XxxMapperImpl.java` и искать **имя поля**
+(`id(`, `getId()`), а не `setX`; предупреждения смотреть сборкой без `-q` (`compileJava --rerun-tasks`). Явный
+`@Mapping` — только для полей с **разными** именами или вложенных (`source = "a.b"`). Проверено экспериментом: убрал
+строку → поле всё равно маппится, warning'а нет. Юнит-тест маппера — через сгенерированный `new XxxMapperImpl()`
+(`Mappers.getMapper` требует `mapstruct` в test classpath).
 
 ## Angular: `tsc --noEmit` чистый, а `ng serve` / `ng build` падает `TS2345` в шаблоне
 
