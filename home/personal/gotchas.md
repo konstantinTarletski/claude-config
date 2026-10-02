@@ -227,6 +227,26 @@ constant expression».
 `?fields=id`; состояние PR, но не комментарии ревью); задачи эпика — `/rest/api/2/search` с
 `jql="Epic Link" = <EPIC>` (в новых Jira — `parent = <EPIC>`).
 
+## `PKIX path building failed` в ответе чужого сервиса
+
+**Симптом:** приложение получает от промежуточного сервиса (шлюз, интеграционный модуль) ошибку с текстом
+`PKIX path building failed: unable to find valid certification path to requested target`; «раньше работало».
+**Причина:** это Java-ошибка TLS **внутри того сервиса**: в его truststore нет корневого/промежуточного
+сертификата того, к кому он ходит дальше (часто — сертификат там обновили). Своё приложение и свой truststore
+здесь ни при чём.
+**Как правильно:** не править у себя; передать сопровождающим того сервиса — какой адрес и какая ошибка.
+Проверить, не маскирует ли своё приложение такую ошибку под бизнес-ошибку («не найден», «неактивен»).
+
+## Сайт открывается в браузере, а `curl`/Java — «unable to get local issuer certificate»
+
+**Симптом:** `curl` → `(60) SSL certificate problem: unable to get local issuer certificate`, Java → `PKIX path
+building failed`, а браузер открывает адрес без ошибок.
+**Причина:** сервер отдаёт только свой сертификат без промежуточного CA. Браузер догружает промежуточный сам
+(AIA), серверные клиенты — нет.
+**Как правильно:** `openssl s_client -connect <host>:443 -servername <host> -showcerts` — в цепочке один
+сертификат (`0 s:`) и «Verify return code: 21». Чинит владелец сервера (DevOps): отдавать полную цепочку. Особенно
+важно для адресов, на которые ходят внешние системы (вебхуки).
+
 ## Bitbucket: комментарии PR — только REST/UI, не SSH
 
 **Симптом:** нужно прочитать ревью PR, есть SSH-ключ — не помогает; REST без авторизации — `401`.
@@ -274,3 +294,13 @@ MapStruct при неявном сопоставлении не увидел.
 и проверить, что все поля выставляются; для полей родителя — явный `@Mapping(source = "id", target = "id")`.
 Юнит-тест маппера — через сгенерированный `new XxxMapperImpl()` (`Mappers.getMapper` требует `mapstruct` в test
 classpath, его там может не быть).
+
+## Angular: `tsc --noEmit` чистый, а `ng serve` / `ng build` падает `TS2345` в шаблоне
+
+**Симптом:** `tsc --noEmit -p tsconfig.app.json` и unit-тесты зелёные, а `ng serve` → `ERROR TS2345 … [plugin
+angular-compiler]` с указанием строки `*.component.html`.
+**Причина:** `tsc` не видит шаблоны — их типы проверяет только компилятор Angular (`strictTemplates`) при сборке.
+Частый случай — `null` в типе: `(rowClick)="f($event['id'])"`, где у модели `id: number | null` (nullable из
+сгенерированной OpenAPI-модели), а метод принимает `id?: number`.
+**Как правильно:** проверять `ng build` (`npm run build`), а не только `tsc`; метод, куда приходят поля из модели,
+объявлять с тем же типом (`id?: number | null`) и нормализовать внутри (`id ?? undefined`).
