@@ -59,6 +59,17 @@ Windows-git'ом: `cmd.exe /c "del gradlew && git checkout -- gradlew"` (про�
 **Как правильно:** такие модели читать Jackson 2 `ObjectMapper`'ом. Jackson 3 — только для `JsonNode` и
 своих простых типов.
 
+## Spring 4.0: RestTemplate падает на лишних полях JSON, нет хелперов авторизации
+
+**Симптом:** в старом проекте (Spring 4.0.x) ответ внешнего API не читается: `UnrecognizedPropertyException`, хотя
+нужные поля в DTO есть; `HttpHeaders.setBasicAuth` и `HttpHeaders.AUTHORIZATION` — «cannot find symbol».
+**Причина:** в Spring 4.0 `MappingJackson2HttpMessageConverter` создаёт голый `new ObjectMapper()` —
+`FAIL_ON_UNKNOWN_PROPERTIES=true` (выключать по умолчанию стал `Jackson2ObjectMapperBuilder` в 4.1); `setBasicAuth`
+появился в 5.1, константа `AUTHORIZATION` — позже 4.0.
+**Как правильно:** DTO ответов — `@JsonIgnoreProperties(ignoreUnknown = true)`; Basic — вручную:
+`headers.set("Authorization", "Basic " + Base64.getEncoder().encodeToString((user + ":" + pass).getBytes(UTF_8)))`.
+Проверить версию: `new MappingJackson2HttpMessageConverter().getObjectMapper().isEnabled(FAIL_ON_UNKNOWN_PROPERTIES)`.
+
 ## JUnit `@CsvSource`: значения — только константы времени компиляции
 
 **Симптом:** `"A".repeat(101) + " | …"` в `@CsvSource` → ошибка компиляции «element value must be a

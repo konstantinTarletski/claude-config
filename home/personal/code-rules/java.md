@@ -15,6 +15,11 @@ warning (`Unmapped target property: "x"`), а `gradle -q` его скрывае�
 строку → поле всё равно маппится, warning'а нет. Юнит-тест маппера — через сгенерированный `new XxxMapperImpl()`
 (`Mappers.getMapper` требует `mapstruct` в test classpath).
 
+**Разные имена — сначала выровнять, потом маппить.** Поле API (из спеки аналитика) отличается от сущности только
+регистром или суффиксом (`cronExpressionTimezone` / `cronExpressionTimeZone`, `minDelayBetweenExecutions` /
+`minDelayBetweenCronExecutionsInMs`) — не писать `@Mapping`, а назвать поле в OpenAPI как в сущности и дать аналитику
+заготовку правки wiki. `@Mapping` остаётся только для вложенных (`a.b`) и действительно разных по смыслу имён.
+
 ## OpenAPI 3.0: ключи map не валидируются, тексты bean-validation стандартные
 
 **Ситуация:** нужно проверить ключи тела `{"<key>": …}` (`additionalProperties`) или выдать свой текст ошибки, а в
