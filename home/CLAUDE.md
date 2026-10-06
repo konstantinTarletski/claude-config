@@ -10,8 +10,8 @@
 ├── CLAUDE.md                            6.0 КБ  # ЭТОТ ФАЙЛ: дерево, правило размера, @-импорты
 ├── personal/                                    # ПЕРЕНОСИМОЕ, без специфики компании/проекта
 │   ├── rules/                                   # КАК РАБОТАЕМ — @, всегда
-│   │   ├── communication.md             7.2 КБ  # язык, переводы, коротко, объяснения через код, вопросы, «пошло не так»
-│   │   ├── workflow.md                  6.1 КБ  # тикет → разбор → «делай» → ревью MR/PR → проверка → сдача задачи
+│   │   ├── communication.md             7.7 КБ  # язык, переводы, коротко, объяснения через код, вопросы, «пошло не так»
+│   │   ├── workflow.md                  7.9 КБ  # тикет → разбор → «делай» → ревью MR/PR → проверка → сдача задачи
 │   │   ├── safety.md                    2.6 КБ  # секреты, чужое не трогать, разрушительные шаги, разрешения
 │   │   └── structure.md                11.9 КБ  # что куда писать, переносимость, «не дублировать»
 │   ├── code-rules/                              # КАК ПИСАТЬ КОД — @, всегда; растёт по языкам
@@ -23,7 +23,7 @@
 │   │   ├── git.md                       2.0 КБ  # WSL-git и CRLF, HTTPS-авторизация
 │   │   ├── java-gradle.md               6.9 КБ  # gradlew, sdkman, отчёты тестов, исходники зависимостей, Jackson, Spring 4.0, JUnit
 │   │   ├── node-angular.md              5.9 КБ  # node_modules, npm, сертификаты, ng build, ng-zorro
-│   │   ├── services.md                  4.3 КБ  # VPN, Jira, Confluence, Bitbucket
+│   │   ├── services.md                  4.1 КБ  # VPN, Jira, Confluence, Bitbucket
 │   │   └── tls.md                       2.4 КБ  # PKIX, неполная цепочка сертификатов
 │   ├── environment.md                   3.6 КБ  # как поставить и выбрать Java/Node (sdkman, nvm)
 │   ├── skills/<имя>/SKILL.md                    # ПРОЦЕДУРЫ по вызову: ticket, estimate, commit-message, review-lessons
