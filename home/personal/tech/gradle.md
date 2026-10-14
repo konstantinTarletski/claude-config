@@ -30,3 +30,8 @@ Java и её установка — `tech/java.md`; WSL и окончания с
   `C:\Users\<user>\.gradle\…`; Maven — `~/.m2/repository/<group-путь>/<artifact>/<version>/`). `*-sources.jar`
   распаковать в scratchpad. Нашёлся баг в такой библиотеке — не обходить
   (`WORK.DISC.7`).
+- **GRADL.TRAP.5** **Не переключать ветку во время сборки.** Часть файлов компилируется уже из другой ветки — падает
+  компиляция (`integrationTest` и т. п.) без причины в коде. Дождаться конца сборки.
+- **GRADL.TRAP.6** [Lombok] **После смены ветки `compileJava` — «100 errors»** (`cannot find symbol log`, `is not
+  abstract … isActive()`, `import requires canonical name for Fields`): сломалась инкрементальная компиляция, Lombok не
+  отработал; код в порядке. Лечится `compileJava --rerun-tasks`.

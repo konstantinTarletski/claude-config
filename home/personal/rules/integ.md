@@ -56,6 +56,10 @@
   `/rest/build-status/1.0/commits/<hash>`.
 - **INTEG.GIT.3** `fetch`/`pull`/`push` по HTTPS из WSL — Windows-git'ом (`GIT.TRAP.2`).
 
+## INTEG.LOGS — логи (Kibana и т. п.)
+
+Пока пусто — только проектное (доступы, сохранённые запросы).
+
 ## INTEG.MAIL — почта
 
 Пока пусто.
