@@ -1,4 +1,4 @@
-# claude-config — мои личные настройки Claude Code
+# claude-config — общие настройки Claude Code (v2.0)
 
 Здесь **по-настоящему** лежат мои общие правила и скиллы — то, что не зависит от проекта и
 переезжает со мной. В `~/.claude` — только симлинки сюда (их создаёт `install.sh`). Правишь файл по
@@ -6,14 +6,18 @@
 
 ## Что где
 
-Дерево файлов с размерами и назначением — в [`home/CLAUDE.md`](home/CLAUDE.md) (единственное место, обновляется при
-каждом изменении). Коротко: `home/CLAUDE.md` → `~/.claude/CLAUDE.md`, `home/personal/` → `~/.claude/personal`
-(`rules/`, `code-rules/`, `gotchas/` — подключаются `@`-импортами; `skills/` → `~/.claude/skills/<имя>`; `templates/` —
-документ задачи и заготовка нового проекта).
+Дерево файлов с размерами и назначением, правила ведения правил (`RULES`: номера `ФАЙЛ.РАЗДЕЛ.N`, проект, версии) —
+в [`home/CLAUDE.md`](home/CLAUDE.md) (единственное место). Коротко: `home/CLAUDE.md` → `~/.claude/CLAUDE.md`,
+`home/personal/` → `~/.claude/personal` (`rules/`, `tech/` — подключаются `@`-импортами; `tools/` — утилиты;
+`skills/` → `~/.claude/skills/<имя>`; `templates/` — документ задачи и заготовка проекта; `migrate/` — переезд проекта
+на новую версию). Версии — теги `v1.0`, `v2.0`…, что поменялось — [`CHANGELOG.md`](CHANGELOG.md).
 
-**Проектного здесь нет.** `CLAUDE.md` проекта (с разделом «Задачи» — параметры для `/ticket`),
-`.claude/gotchas.md`, документы по задачам `.claude/tickets/<KEY>.md`, `.sdkmanrc` / `.nvmrc` —
-лежат обычными файлами в самом проекте и скрыты от git через `<repo>/.git/info/exclude`.
+**Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
+`.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
+проекте и скрыты от git через `<repo>/.git/info/exclude`. Проект на старой версии — ассистент предложит переезд
+(`RULES.MIGR`).
+
+После `git pull` новой версии — `./install.sh` (новые скиллы) и переезд своих проектов по `home/personal/migrate/`.
 
 Секретов здесь тоже нет: токены — в `~/.bashrc`, доступы к Artifactory — в `~/.gradle/gradle.properties`.
 
