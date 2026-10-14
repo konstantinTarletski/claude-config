@@ -59,7 +59,8 @@
 │   │   ├── ng.md         NG              3.7 КБ   # effect/untracked; ng-zorro, шаблоны, playwright         (фронт)
 │   │   ├── git.md        GIT             2.2 КБ   # CRLF, HTTPS из WSL, коммит из cmd
 │   │   ├── wsl.md        WSL             6.1 КБ   # окружение; localhost, Docker, симлинки, CRLF, форматтер
-│   │   └── tls.md        TLS             2.2 КБ   # PKIX, неполная цепочка
+│   │   ├── tls.md        TLS             2.2 КБ   # PKIX, неполная цепочка
+│   │   └── sql.md        SQL             2.5 КБ   # Flyway: удалённый R__-файл, правка применённой V    (бэк)
 │   ├── tools/                                     # УТИЛИТЫ (FILES.TOOLS) — не грузятся, запускаются
 │   │   ├── jira.py                                # тикет текстом, --attach, --changelog
 │   │   ├── wiki.py                                # страница → текст с пометками [+новое+] ~~убрано~~, вложения
@@ -83,7 +84,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `rules/` + `tech/`): **85.4 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `rules/` + `tech/`): **88.1 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 ## Подключение
 
@@ -114,3 +115,5 @@
 @~/.claude/personal/tech/wsl.md
 
 @~/.claude/personal/tech/tls.md
+
+@~/.claude/personal/tech/sql.md
