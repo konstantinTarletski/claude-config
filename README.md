@@ -6,18 +6,19 @@
 
 ## Что где
 
-Дерево файлов с размерами и назначением, правила ведения правил (`RULES`: номера `ФАЙЛ.РАЗДЕЛ.N`, проект, версии) —
-в [`home/CLAUDE.md`](home/CLAUDE.md) (единственное место). Коротко: `home/CLAUDE.md` → `~/.claude/CLAUDE.md`,
-`home/personal/` → `~/.claude/personal` (`rules/`, `tech/` — подключаются `@`-импортами; `tools/` — утилиты;
-`skills/` → `~/.claude/skills/<имя>`; `templates/` — документ задачи и заготовка проекта; `migrate/` — переезд проекта
-на новую версию). Версии — теги `v1.0`, `v2.0`…, что поменялось — [`CHANGELOG.md`](CHANGELOG.md).
+Дерево файлов с размерами и назначением, как читать правила (`RULES`: номера `ФАЙЛ.РАЗДЕЛ.N`, проект, версии) — в
+[`home/CLAUDE.md`](home/CLAUDE.md) (единственное место); как их вести и переводить проекты на новую версию — скилл
+`home/personal/skills/rules/`. Коротко: `home/CLAUDE.md` → `~/.claude/CLAUDE.md`, `home/personal/` →
+`~/.claude/personal` (`rules/`, `tech/` — подключаются `@`-импортами; `tools/` — утилиты; `skills/` →
+`~/.claude/skills/<имя>`; `templates/` — документ задачи и заготовка проекта). Версии — теги `v1.0`, `v2.0`…, что
+поменялось — [`CHANGELOG.md`](CHANGELOG.md).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
 проекте и скрыты от git через `<repo>/.git/info/exclude`. Проект на старой версии — ассистент предложит переезд
 (`RULES.MIGR`).
 
-После `git pull` новой версии — `./install.sh` (новые скиллы) и переезд своих проектов по `home/personal/migrate/`.
+После `git pull` новой версии — `./install.sh` (новые скиллы) и переезд своих проектов (скилл `/rules`).
 
 Секретов здесь тоже нет: токены — в `~/.bashrc`, доступы к Artifactory — в `~/.gradle/gradle.properties`.
 
