@@ -111,24 +111,24 @@
 
 ```
 ~/.claude/                                         # симлинки в /mnt/c/code/claude-config/home
-├── CLAUDE.md                            ⚠15.9 КБ  # ЭТОТ ФАЙЛ: RULES, дерево, @-импорты
+├── CLAUDE.md                            ⚠16.9 КБ  # ЭТОТ ФАЙЛ: RULES, дерево, @-импорты
 ├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
 │   ├── rules/                                     # КАК РАБОТАЕМ — @, всегда
 │   │   ├── comm.md       COMM            9.3 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
 │   │   ├── work.md       WORK           10.5 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
 │   │   ├── safe.md       SAFE            3.3 КБ   # секреты, чужое, разрушительные шаги, разрешения
-│   │   ├── files.md      FILES           8.8 КБ   # что куда писать, документы задач, утилиты
-│   │   └── integ.md      INTEG           5.7 КБ   # токены, VPN, трекер, wiki, git-сервер, почта, чат
+│   │   ├── files.md      FILES           9.0 КБ   # что куда писать, документы задач, утилиты
+│   │   └── integ.md      INTEG           5.9 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
-│   │   ├── code.md       CODE            4.5 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            6.2 КБ   # sdkman; MapStruct; Jackson 3, Spring 4.0, JUnit       (бэк)
-│   │   ├── gradle.md     GRADL           3.4 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники         (бэк)
+│   │   ├── code.md       CODE            4.6 КБ   # общее для любого кода + журнал замечаний ревью
+│   │   ├── java.md       JAVA            7.8 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
+│   │   ├── gradle.md     GRADL           4.2 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok (бэк)
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            5.0 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
-│   │   ├── ng.md         NG              3.6 КБ   # effect/untracked; ng-zorro, шаблоны, playwright         (фронт)
+│   │   ├── ng.md         NG              3.7 КБ   # effect/untracked; ng-zorro, шаблоны, playwright         (фронт)
 │   │   ├── git.md        GIT             2.2 КБ   # CRLF, HTTPS из WSL, коммит из cmd
 │   │   ├── wsl.md        WSL             6.1 КБ   # окружение; localhost, Docker, симлинки, CRLF, форматтер
-│   │   └── tls.md        TLS             2.1 КБ   # PKIX, неполная цепочка
+│   │   └── tls.md        TLS             2.2 КБ   # PKIX, неполная цепочка
 │   ├── tools/                                     # УТИЛИТЫ (FILES.TOOLS) — не грузятся, запускаются
 │   │   ├── jira.py                                # тикет текстом, --attach, --changelog
 │   │   ├── wiki.py                                # страница → текст с пометками [+новое+] ~~убрано~~, вложения
@@ -152,7 +152,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `rules/` + `tech/`): **88.3 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `rules/` + `tech/`): **91.9 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 ## Подключение
 
