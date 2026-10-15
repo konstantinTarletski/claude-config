@@ -32,8 +32,12 @@
   **Симптом:** в WSL `docker info` → `dial unix /var/run/docker.sock: connect: no such file or directory`,
   Testcontainers не стартуют; `cmd.exe /c "docker info"` отвечает.
   **Причина:** в Docker Desktop не включена WSL-интеграция для этого дистрибутива.
-  **Как правильно:** постоянно — Docker Desktop → Settings → Resources → WSL integration (включает пользователь).
-  Временно — тесты Windows-сборкой через `cmd.exe` (`GRADL.TRAP.1`); `docker exec` — тоже через `cmd.exe`.
+  **Как правильно:** постоянно — Docker Desktop → Settings → Resources → WSL integration → включить свой дистрибутив
+  → Apply & restart (включает пользователь), затем новый терминал. [Docker Desktop 29, WSL 3.0] После этого из WSL
+  работают `docker`, `docker compose`, `docker exec` и Testcontainers — тот же движок и те же контейнеры, что в
+  Windows. Apply & restart **останавливает контейнеры** (поднимутся только с `restart: always`) — после поднять
+  `docker compose up -d`. Пока не включено — тесты Windows-сборкой через `cmd.exe` (`GRADL.TRAP.1`), `docker exec` —
+  тоже через `cmd.exe`. Форматтер — всё равно Windows-сборкой (`WSL.TRAP.7`, дело в CRLF, а не в Docker).
 - **WSL.TRAP.5** **Python `open()` на CRLF-файлах.**
   **Симптом:** после правки скриптом файл целиком «изменился» или сменились окончания строк.
   **Причина:** текстовый режим с universal newlines читает `\r\n` как `\n` и пишет `\n`.
@@ -56,3 +60,10 @@
   **Причина:** GNU `sed -i` пишет новый файл и подменяет им путь, не идя по ссылке (нужен `--follow-symlinks`).
   **Как правильно:** править Edit'ом (`SAFE.PERM.1`); после случайной подмены — сравнить с оригиналом и вернуть ссылку
   (`ln -s <оригинал> <путь>`).
+- **WSL.TRAP.9** [WSL 3.0, Docker Desktop 29] **После обновления WSL Docker Desktop не стартует.**
+  **Симптом:** `docker ps` (и из `cmd.exe`) → `Docker Desktop is unable to start`; `wsl -l -v` — `docker-desktop`
+  `Stopped`.
+  **Причина:** Docker Desktop держит свой WSL-дистрибутив; после обновления WSL он не поднялся сам.
+  **Как правильно:** перезапустить Docker Desktop (Quit → запустить; 15.10.2026 помогло); не помогло — Troubleshoot →
+  Restart, затем обновить Docker Desktop. `wsl --shutdown` рвёт сессию ассистента — делает пользователь сам. После
+  обновления WSL проверить и остальное: `java -version`, `node -v`, `git`, симлинки `~/.claude`, сеть/VPN.
