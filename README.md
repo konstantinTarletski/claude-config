@@ -19,7 +19,7 @@
 
 ```
 ~/.claude/                                         # симлинки в /mnt/c/code/claude-config/home
-├── CLAUDE.md                              8.2 КБ  # RULES (как читать), коды файлов и утилиты, @-импорты
+├── CLAUDE.md                              8.3 КБ  # RULES (как читать), коды файлов и утилиты, @-импорты
 ├── user.md       USER                             # симлинк на активный профиль (не в git, RULES.USER.1)
 ├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
 │   ├── users/                                     # ПРОФИЛИ — @ только активный (через user.md)
@@ -65,7 +65,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **98.8 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **98.9 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
