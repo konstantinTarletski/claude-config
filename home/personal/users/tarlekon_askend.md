@@ -82,6 +82,9 @@
   TRAM: `TRAM_JIRA_TOKEN`, `TRAM_CONFLUENCE_TOKEN`, `ARIS_TEST_DB_URL`. Где создать — `INTEG` проекта.
 - **USER.ACC.2** Корпоративный CA — в хранилище Linux; `NODE_EXTRA_CA_CERTS` задан (`NODE.TRAP.2`). VPN — нужен для
   внутренних сервисов (`INTEG.ALL.5`).
+- **USER.ACC.3** Microsoft 365 Askend (Teams, почта, календарь): **дать доступ приложению сам не могу** — даже Graph
+  Explorer просит утверждение администратора (проверено 15.10.2026). Читать Teams/почту/календарь — только через IT;
+  не делаем. Как проверить в новой фирме — Graph Explorer → Sign in → `GET /me/events`.
 
 ## USER.FOLD — мои папки
 
