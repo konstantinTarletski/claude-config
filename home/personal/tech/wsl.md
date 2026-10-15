@@ -2,7 +2,7 @@
 
 ## WSL.SETUP — окружение
 
-- **WSL.SETUP.1** Работаем из WSL, поэтому **JDK и Node — из WSL** (`JAVA.SETUP.2`, `NODE.SETUP.2`), а не
+- **WSL.SETUP.1** Работаем из WSL (`USER.SYS.1`; версии и что установлено — `USER.DEV`), поэтому **JDK и Node — из WSL** (`JAVA.SETUP.2`, `NODE.SETUP.2`), а не
   Windows-версии через `cmd.exe`; те — только временно и с сообщением, чего не хватает.
 - **WSL.SETUP.2** **Доступы сборки** (Artifactory/Nexus/npm registry) — в WSL-профиле: `~/.gradle/gradle.properties`,
   `~/.m2/settings.xml`, `~/.npmrc`. Секреты туда переносит пользователь сам (`SAFE.SECR.1`).
@@ -33,7 +33,7 @@
   Testcontainers не стартуют; `cmd.exe /c "docker info"` отвечает.
   **Причина:** в Docker Desktop не включена WSL-интеграция для этого дистрибутива.
   **Как правильно:** постоянно — Docker Desktop → Settings → Resources → WSL integration → включить свой дистрибутив
-  → Apply & restart (включает пользователь), затем новый терминал. [Docker Desktop 29, WSL 3.0] После этого из WSL
+  → Apply & restart (включает пользователь), затем новый терминал. [Docker Desktop 4.95, WSL 3.0] После этого из WSL
   работают `docker`, `docker compose`, `docker exec` и Testcontainers — тот же движок и те же контейнеры, что в
   Windows. Apply & restart **останавливает контейнеры** (поднимутся только с `restart: always`) — после поднять
   `docker compose up -d`. Пока не включено — тесты Windows-сборкой через `cmd.exe` (`GRADL.TRAP.1`), `docker exec` —
@@ -60,7 +60,7 @@
   **Причина:** GNU `sed -i` пишет новый файл и подменяет им путь, не идя по ссылке (нужен `--follow-symlinks`).
   **Как правильно:** править Edit'ом (`SAFE.PERM.1`); после случайной подмены — сравнить с оригиналом и вернуть ссылку
   (`ln -s <оригинал> <путь>`).
-- **WSL.TRAP.9** [WSL 3.0, Docker Desktop 29] **После обновления WSL Docker Desktop не стартует.**
+- **WSL.TRAP.9** [WSL 3.0, Docker Desktop 4.95] **После обновления WSL Docker Desktop не стартует.**
   **Симптом:** `docker ps` (и из `cmd.exe`) → `Docker Desktop is unable to start`; `wsl -l -v` — `docker-desktop`
   `Stopped`.
   **Причина:** Docker Desktop держит свой WSL-дистрибутив; после обновления WSL он не поднялся сам.

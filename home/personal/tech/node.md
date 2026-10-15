@@ -6,11 +6,11 @@ Angular — `tech/ng.md`; WSL — `tech/wsl.md`.
 
 - **NODE.SETUP.1** Версию **не угадывать — брать из проекта**, по приоритету: `.nvmrc`, `engines` в `package.json`,
   базовый образ в `Dockerfile`, образ в CI; мажорная версия фреймворка (Angular/…) задаёт допустимый диапазон Node.
-- **NODE.SETUP.2** Работаем из WSL — **Node из WSL через nvm** (`~/.nvm`): `nvm install <ver>` / `nvm use <ver>`
+- **NODE.SETUP.2** Работаем из WSL (`USER.SYS.1`, что стоит — `USER.DEV.3`) — **Node из WSL через nvm** (`~/.nvm`): `nvm install <ver>` / `nvm use <ver>`
   (в начале команды, если нет автопереключения). Закрепить — `.nvmrc` в корне; если его нет в git проекта — скрыть
   через `.git/info/exclude`, если есть — пользоваться им.
 - **NODE.SETUP.3** `node_modules` должны быть установлены **WSL-нодой** (в Windows-установке — бинарники `win32-*`,
-  `NODE.TRAP.1`). Переустановка из WSL ломает сборку в Windows — только с моего согласия.
+  `NODE.TRAP.1`). Переустановка из WSL ломает сборку в Windows — только с моего согласия (`USER.PERM.2`).
 
 ## NODE.TRAP — грабли
 

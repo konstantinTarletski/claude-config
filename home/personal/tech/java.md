@@ -7,7 +7,7 @@
 - **JAVA.SETUP.1** Версию **не угадывать — брать из проекта**, по приоритету: `sourceCompatibility` / `toolchain` в
   `build.gradle(.kts)` / `pom.xml`, базовый образ в `Dockerfile`, версия Gradle-wrapper (старый Gradle не запускается
   на новой Java — `GRADL.TRAP.2`).
-- **JAVA.SETUP.2** Работаем из WSL — **JDK из WSL через sdkman** (`~/.sdkman`): `sdk install java <ver>` /
+- **JAVA.SETUP.2** Работаем из WSL (`USER.SYS.1`, что стоит — `USER.DEV.2`) — **JDK из WSL через sdkman** (`~/.sdkman`): `sdk install java <ver>` /
   `sdk use java <ver>`. Нужной версии нет — поставить и сказать об этом. Дистрибутив — тот же, что у команды/IDE (часто
   Corretto `-amzn` или Temurin `-tem`).
 - **JAVA.SETUP.3** Закрепить версию: `.sdkmanrc` (`sdk env init`) в корне, автопереключение — `sdkman_auto_env=true` в
