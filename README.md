@@ -23,16 +23,16 @@
 ├── user.md       USER                             # симлинк на активный профиль (не в git, RULES.USER.1)
 ├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
 │   ├── users/                                     # ПРОФИЛИ — @ только активный (через user.md)
-│   │   └── tarlekon_askend.md            9.6 КБ   # я и окружение в Askend: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
+│   │   └── tarlekon_askend.md           11.0 КБ   # я и окружение в Askend: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
 │   ├── rules/                                     # КАК РАБОТАЕМ — @, всегда
-│   │   ├── comm.md       COMM            9.9 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
-│   │   ├── work.md       WORK           10.7 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
+│   │   ├── comm.md       COMM           10.3 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
+│   │   ├── work.md       WORK           11.0 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
 │   │   ├── safe.md       SAFE            3.4 КБ   # секреты, чужое, разрушительные шаги, разрешения
 │   │   ├── files.md      FILES          10.0 КБ   # что куда писать, документы задач, утилиты
 │   │   └── integ.md      INTEG           5.9 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
 │   │   ├── code.md       CODE            4.6 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            7.8 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
+│   │   ├── java.md       JAVA            8.5 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
 │   │   ├── gradle.md     GRADL           4.2 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok (бэк)
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            5.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
@@ -65,7 +65,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **98.9 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **101.8 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
