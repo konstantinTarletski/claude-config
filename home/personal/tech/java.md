@@ -35,6 +35,16 @@
   `@Mapping`, а назвать поле в OpenAPI как в сущности и дать аналитику заготовку правки wiki. `@Mapping` остаётся только
   для вложенных (`a.b`) и действительно разных по смыслу имён.
 
+- **JAVA.RULE.3** [MapStruct] **Общий кусок маппинга — интерфейс с `default`-методом.**
+  **Ошибка:** правило для одного поля (например, «короткое имя, а если пусто — код»), нужное в нескольких мапперах,
+  вынесено в отдельный Spring-бин (`@Component`-класс) и подключено через `uses = …` — ревьюер: «class → interface,
+  используй default-метод».
+  **Как правильно:** `interface XxxMapper { @Named("xxx") default String xxx(Entity e) { … } }`, мапперы его
+  наследуют (`… extends BaseMapper<E, R>, XxxMapper`) и берут `@Mapping(source = ".", target = "…", qualifiedByName =
+  "xxx")`; `uses` — только для того, что правда бин (сервис, справочник из БД). Проверка строк — готовые утилиты
+  (`StringUtils.isNotBlank`), не ручное `!= null && !isBlank()`. Юнит-тест — `new XxxMapper() {}`. Перед правкой маппера —
+  соседние мапперы (`CODE.RULE.6`; `JAVA.RULE.1–2` — тоже про MapStruct).
+
 ## JAVA.TRAP — грабли
 
 - **JAVA.TRAP.1** [Jackson 3] **Не видит `@JsonProperty` на унаследованных полях.**

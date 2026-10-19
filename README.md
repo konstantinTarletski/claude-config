@@ -31,8 +31,8 @@
 │   │   ├── files.md      FILES          10.0 КБ   # что куда писать, документы задач, утилиты
 │   │   └── integ.md      INTEG           5.9 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
-│   │   ├── code.md       CODE            5.0 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            8.5 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
+│   │   ├── code.md       CODE            5.8 КБ   # общее для любого кода + журнал замечаний ревью
+│   │   ├── java.md       JAVA            9.7 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
 │   │   ├── gradle.md     GRADL           4.2 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok (бэк)
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            5.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
@@ -65,7 +65,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **103.7 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **105.7 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
