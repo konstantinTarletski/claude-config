@@ -44,7 +44,7 @@
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            5.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
 │   │   ├── ng.md         NG              3.7 КБ   # effect/untracked; ng-zorro, шаблоны, playwright         (фронт)
-│   │   ├── git.md        GIT             2.2 КБ   # CRLF, HTTPS из WSL, коммит из cmd
+│   │   ├── git.md        GIT             3.7 КБ   # CRLF, HTTPS из WSL, коммит из cmd, ignored-файл при смене ветки
 │   │   ├── wsl.md        WSL             7.7 КБ   # окружение; localhost, Docker, симлинки, CRLF, форматтер
 │   │   ├── tls.md        TLS             2.2 КБ   # PKIX, неполная цепочка
 │   │   └── sql.md        SQL             4.7 КБ   # Flyway: удалённый R__, правка V; Oracle: VARCHAR2; PG: пояс JVM (бэк)
@@ -74,7 +74,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **120.6 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **122.1 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
