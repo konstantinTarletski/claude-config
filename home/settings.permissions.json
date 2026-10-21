@@ -3,7 +3,7 @@
     "allow": [
       "Edit(//mnt/c/code/*/.claude/**)",
       "Edit(//mnt/c/code/*/CLAUDE.md)",
-      "Edit(//mnt/c/code/claude-config/**)",
+      "Edit(//mnt/d/CODE/claude-config/**)",
       "Edit(~/.claude/personal/**)",
       "Bash(git status*)",
       "Bash(git log *)",
