@@ -28,14 +28,15 @@
 ├── user.md       USER                             # симлинк на активный профиль (RULES.USER.1)
 ├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
 │   ├── users/                                     # ПРОФИЛИ — не в git; @ только активный (через user.md)
-│   │   └── <имя>_<фирма>.md            ~11.5 КБ   # я и окружение: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
+│   │   ├── <имя>_<фирма>.md            ~12.0 КБ   # я и окружение: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
+│   │   └── <имя>_<фирма>.settings.json            # настройки Claude Code — симлинк ~/.claude/settings.json
 │   ├── firms/                                     # ФИРМЫ — не в git; @ из профиля (RULES.USER.2)
 │   │   └── <фирма>.md          FIRM     ~6.6 КБ   # своя фирма и клиенты: проекты, репозитории, системы
 │   ├── rules/                                     # КАК РАБОТАЕМ — @, всегда
-│   │   ├── comm.md       COMM           11.1 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
+│   │   ├── comm.md       COMM           10.5 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
 │   │   ├── work.md       WORK           12.1 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
-│   │   ├── safe.md       SAFE            3.4 КБ   # секреты, чужое, разрушительные шаги, разрешения
-│   │   ├── files.md      FILES          10.9 КБ   # что куда писать, документы задач, утилиты
+│   │   ├── safe.md       SAFE            3.3 КБ   # секреты, чужое, разрушительные шаги, разрешения
+│   │   ├── files.md      FILES          11.0 КБ   # что куда писать, документы задач, утилиты
 │   │   └── integ.md      INTEG           6.3 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
 │   │   ├── code.md       CODE            5.8 КБ   # общее для любого кода + журнал замечаний ревью
@@ -59,7 +60,8 @@
 │   │                                              #   v1-to-v2.md, v2.0-to-v2.1.md, v2.1-to-v2.2.md), ticket, estimate,
 │   │                                              #   commit-message, review-lessons, timelog-askend
 │   ├── statusline/                                # скрипт строки состояния
-│   └── templates/                                 # user.md — профиль; firm.md — фирма; ticket.md — документ задачи;
+│   └── templates/                                 # user.md — профиль; firm.md — фирма; settings.json — настройки
+│                                                  #   Claude Code (разрешения, тема); ticket.md — документ задачи;
 │                                                  #   timelog-askend.md — часы проекта; project/ — заготовка
 └── projects/<проект>/memory/                      # память ассистента (контекст разговоров, не факты — они в USER)
 
@@ -74,7 +76,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **122.1 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **122.0 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
@@ -105,18 +107,19 @@ cd /mnt/c/code/claude-config
 
 ## Разрешения (`~/.claude/settings.json`)
 
-Сам файл сюда не симлинкается — Claude Code переписывает его при `/model`, `/config` и т.п. Блок
-`permissions` лежит копией в `home/settings.permissions.json` — на новой машине вставить его в
-`~/.claude/settings.json`. Что в нём:
+С 2.2 — **рядом с профилем**: `home/personal/users/<имя>_<фирма>.settings.json` (не в git — там пути и имена
+токенов), `~/.claude/settings.json` — симлинк на него (`install.sh`). Нет своего — копия шаблона
+`home/personal/templates/settings.json`, подставить пути и токены. В шаблоне:
 
 - `Edit(...)` для заметок (`.claude/**`, `CLAUDE.md` проектов, `claude-config`, `~/.claude/personal`) — пишутся без
   запроса;
 - `Bash(...)` для команд только на чтение (`git status/log/diff/show`, `ls`, `grep`, `head`, `tail`, `sed -n`,
   Windows-git `status/diff/log/fetch`, `curl` к Jira с токеном);
-- `ask` для `.claude/settings*.json` проектов — чтобы ассистент не мог сам себе расширить разрешения.
+- `ask` для `.claude/settings*.json` проектов — чтобы ассистент не мог сам себе расширить разрешения;
+- строка состояния и тема `dark` (тёмный фон терминала; `light` даёт тёмно-синий, которого на тёмном не видно).
 
-Поменял разрешения в `~/.claude/settings.json` — обновить копию:
-`python3 -c "import json; d=json.load(open('$HOME/.claude/settings.json')); json.dump({'permissions': d['permissions']}, open('home/settings.permissions.json','w'), indent=2, ensure_ascii=False)"`.
+`/config` пишет через симлинк, ссылка остаётся (проверено 21.10.2026, Claude Code на WSL). Если когда-нибудь
+перепишет её обычным файлом — `./install.sh` это заметит и скажет.
 
 ## Строка состояния (claude-pace)
 
@@ -131,11 +134,7 @@ sha256 `0dd4fecb…a020b`), доступна как `~/.claude/personal/statusli
 sudo apt-get install -y jq      # единственная зависимость; без неё в строке «[needs jq]»
 ```
 
-и в `~/.claude/settings.json` (сам файл не симлинкается — см. выше):
-
-```json
-"statusLine": { "type": "command", "command": "~/.claude/personal/statusline/claude-pace.sh" }
-```
+Подключение (`statusLine`) — уже в шаблоне `templates/settings.json`.
 
 Обновить скрипт: скачать `https://github.com/Astro-Han/claude-pace/releases/latest/download/claude-pace.sh` во
 временную папку, просмотреть дифф с текущей копией (нет ли сети, `eval`, записи вне кеша) и только потом заменить.

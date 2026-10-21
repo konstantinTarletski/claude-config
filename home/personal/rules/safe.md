@@ -26,8 +26,7 @@
 
 ## SAFE.PERM — меньше запросов разрешений
 
-- **SAFE.PERM.1** Файлы править через Edit/Write (заметки, `CLAUDE.md`, `.claude/**`, `claude-config` разрешены без
-  запроса в `~/.claude/settings.json`), а не через `python3` / `sed -i` / heredoc в Bash — каждая такая команда
-  спрашивает разрешение; Edit сохраняет CRLF, а `sed -i` ещё и рвёт симлинки (`WSL.TRAP.8`).
-- **SAFE.PERM.2** Чтение — простыми командами из разрешённого списка (`git status/log/diff/show`, `ls`, `grep`, `head`,
-  `tail`, `sed -n`), не склеивать их в длинные цепочки с `cd`, `export`, `python3 -c`.
+- **SAFE.PERM.1** Файлы править через Edit/Write (что разрешено без запроса — `settings.json`, `RULES.ONE.3`), а не через
+  `python3` / `sed -i` / heredoc в Bash — каждая такая команда спрашивает разрешение; Edit сохраняет CRLF, а `sed -i` ещё и рвёт симлинки (`WSL.TRAP.8`).
+- **SAFE.PERM.2** Чтение — простыми командами из разрешённого списка (`settings.json`, `RULES.ONE.3`), не склеивать их в
+  длинные цепочки с `cd`, `export`, `python3 -c`.

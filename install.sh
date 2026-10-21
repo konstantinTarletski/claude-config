@@ -88,6 +88,28 @@ if [[ -n "$choice" ]]; then
   run ln -sfn "$USERS_DIR/$choice.md" "$USER_LINK"
 fi
 
+# Настройки Claude Code: ~/.claude/settings.json -> users/<профиль>.settings.json (рядом с профилем, не в git).
+# Claude Code может переписать симлинк обычным файлом (/config, /model) — тогда сказать, ничего не теряя.
+echo "== settings.json"
+SETTINGS_LINK="$CLAUDE_HOME/settings.json"
+if [[ -L "$USER_LINK" ]]; then
+  prof="$(basename "$(readlink "$USER_LINK")" .md)"
+  [[ -n "$choice" ]] && prof="$choice"
+  src="$USERS_DIR/$prof.settings.json"
+  if [[ ! -f "$src" ]]; then
+    echo "! нет $src — скопируй шаблон $CONFIG_DIR/home/personal/templates/settings.json (или свой ~/.claude/settings.json),"
+    echo "  подставь пути и токены и запусти снова"
+  elif [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$src" ]]; then
+    echo "= $SETTINGS_LINK -> users/$prof.settings.json"
+  elif [[ -L "$SETTINGS_LINK" || ! -e "$SETTINGS_LINK" ]] || cmp -s "$src" "$SETTINGS_LINK"; then
+    echo "+ $SETTINGS_LINK -> users/$prof.settings.json"
+    run ln -sfn "$src" "$SETTINGS_LINK"
+  else
+    echo "! $SETTINGS_LINK — обычный файл и отличается от users/$prof.settings.json (Claude Code переписал ссылку?)."
+    echo "  Сравни: diff $SETTINGS_LINK $src — нужное перенеси в $src, потом: rm $SETTINGS_LINK && ./install.sh"
+  fi
+fi
+
 # Файл фирмы (RULES.USER.2): профиль подключает его строкой @~/.claude/personal/firms/<фирма>.md — есть ли он.
 echo "== фирма"
 if [[ -f "$USER_LINK" ]]; then

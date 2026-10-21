@@ -3,4 +3,5 @@ __pycache__/
 
 # Личное — не в публичный репозиторий (RULES.USER.1–2): профиль и файл фирмы, шаблоны — в home/personal/templates/
 home/personal/users/*.md
+home/personal/users/*.json
 home/personal/firms/*.md

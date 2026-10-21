@@ -1,9 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Edit(//mnt/c/code/*/.claude/**)",
-      "Edit(//mnt/c/code/*/CLAUDE.md)",
-      "Edit(//mnt/d/CODE/claude-config/**)",
+      "Edit(//<папка репозиториев>/*/.claude/**)",
+      "Edit(//<папка репозиториев>/*/CLAUDE.md)",
+      "Edit(//<claude-config>/**)",
       "Edit(~/.claude/personal/**)",
       "Bash(git status*)",
       "Bash(git log *)",
@@ -54,12 +54,16 @@
       "Bash(cmd.exe /c \"git diff*)",
       "Bash(cmd.exe /c \"git log*)",
       "Bash(cmd.exe /c \"git fetch*)",
-      "Bash(curl -sS -m * -H \"Authorization: Bearer $JIRA_TOKEN\" *)",
-      "Bash(curl -sS -H \"Authorization: Bearer $JIRA_TOKEN\" *)",
-      "Bash(curl -sS -H \"Authorization: Bearer $TRAM_JIRA_TOKEN\" *)"
+      "Bash(curl -sS -m * -H \"Authorization: Bearer $<ФИРМА>_JIRA_TOKEN\" *)",
+      "Bash(curl -sS -H \"Authorization: Bearer $<ФИРМА>_JIRA_TOKEN\" *)"
     ],
     "ask": [
-      "Edit(//mnt/c/code/*/.claude/settings*.json)"
+      "Edit(//<папка репозиториев>/*/.claude/settings*.json)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/personal/statusline/claude-pace.sh"
+  },
+  "theme": "dark"
 }
