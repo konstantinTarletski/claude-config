@@ -60,7 +60,7 @@
 
 ## Коды файлов и утилиты
 
-Полное дерево с размерами — `README.md` репозитория `claude-config` (где лежит репозиторий — `USER.DEV.6`; `RULES.SIZE`).
+Полное дерево с размерами — `~/.claude/claude-config/README.md` (`RULES.SIZE`). Путь к репозиторию — только ссылка `~/.claude/claude-config`.
 
 - **Профиль:** `USER` — `~/.claude/user.md` → `personal/users/<имя>_<фирма>.md`; **фирма:** `FIRM` —
   `personal/firms/<фирма>.md` (оба не в git, шаблоны — `personal/templates/`).

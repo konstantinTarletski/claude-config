@@ -1,10 +1,16 @@
 # История версий
 
-## 2.2.1 — 21.10.2026: настройки Claude Code рядом с профилем
+## 2.2.1 — 21.10.2026: настройки Claude Code рядом с профилем, путь к репозиторию — в одном месте
 
-После `git pull` — `./install.sh`; свой `~/.claude/settings.json` сначала скопировать в
+После `git pull` — `./install.sh` (переставит ссылки); свой `~/.claude/settings.json` сначала скопировать в
 `home/personal/users/<имя>_<фирма>.settings.json` (иначе `install.sh` скажет, что его нет).
 
+- **`~/.claude/claude-config`** — единственная ссылка с путём к репозиторию; `CLAUDE.md`, `personal`, `user.md`,
+  `settings.json` — относительные ссылки через неё. Переложил репозиторий — `./install.sh` из нового места.
+- `install.sh` не трогает свой локальный `~/.claude/CLAUDE.md` (настройки компьютера), если он подключает правила строкой
+  `@~/.claude/claude-config/home/CLAUDE.md`; ссылки переставляет без `.bak`.
+- В правилах и шаблонах путь — `~/.claude/claude-config` (`RULES.EDIT.2`, «Коды файлов», шаблон `settings.json`);
+  `USER.DEV.6` в шаблоне — без «◆».
 - `~/.claude/settings.json` — симлинк на `personal/users/<имя>_<фирма>.settings.json` (не в git); `/config` пишет
   через симлинк (проверено). Копия разрешений `home/settings.permissions.json` удалена — вместо неё шаблон
   `templates/settings.json` (без путей и токенов, со строкой состояния и темой `dark`). `install.sh` ставит ссылку.

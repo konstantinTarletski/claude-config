@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# Разворачивает claude-config: симлинки в ~/.claude (CLAUDE.md, personal/, скиллы, user.md — активный профиль).
+# Разворачивает claude-config: симлинки в ~/.claude (CLAUDE.md, personal/, скиллы, user.md — активный профиль,
+# settings.json). Путь к репозиторию — ОДНА ссылка ~/.claude/claude-config, остальные — относительные через неё:
+# переехал репозиторий — поменять только её (или ./install.sh из нового места).
 # Повторный запуск безопасен. Использование: ./install.sh [--dry-run] [--profile <имя>_<фирма>]
 set -euo pipefail
 
 CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
+HUB="$CLAUDE_HOME/claude-config"
 DRY_RUN=false
 PROFILE=""
 while [[ $# -gt 0 ]]; do
@@ -18,14 +21,17 @@ done
 
 run() { if $DRY_RUN; then echo "  [dry-run] $*"; else "$@"; fi; }
 
-# link <источник в claude-config> <куда положить симлинк>
+# link <цель, относительно ~/.claude> <куда положить симлинк в ~/.claude>
 link() {
   local src="$1" dst="$2"
   if [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]]; then
     return
   fi
-  if [[ -e "$dst" || -L "$dst" ]]; then
-    if diff -rq "$src" "$dst" >/dev/null 2>&1; then
+  if [[ -L "$dst" ]]; then
+    echo "~ $dst (ссылка — переставляю: $(readlink "$dst") -> $src)"
+    run rm "$dst"
+  elif [[ -e "$dst" ]]; then
+    if diff -rq "$CLAUDE_HOME/$src" "$dst" >/dev/null 2>&1; then
       echo "~ $dst (совпадает, заменяю симлинком)"
       run rm -rf "$dst"
     else
@@ -41,8 +47,23 @@ link() {
 }
 
 echo "== ~/.claude"
-link "$CONFIG_DIR/home/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
-link "$CONFIG_DIR/home/personal" "$CLAUDE_HOME/personal"
+if [[ -L "$HUB" && "$(readlink "$HUB")" == "$CONFIG_DIR" ]]; then
+  echo "= $HUB -> $CONFIG_DIR"
+elif [[ -e "$HUB" && ! -L "$HUB" ]]; then
+  echo "! $HUB — не ссылка, разберись руками" >&2; exit 1
+else
+  echo "+ $HUB -> $CONFIG_DIR"
+  run ln -sfn "$CONFIG_DIR" "$HUB"
+fi
+# Свой локальный ~/.claude/CLAUDE.md (настройки этого компьютера), который подключает правила строкой
+# @~/.claude/claude-config/home/CLAUDE.md, — не трогать.
+if [[ -f "$CLAUDE_HOME/CLAUDE.md" && ! -L "$CLAUDE_HOME/CLAUDE.md" ]] &&
+   grep -q '^@~/\.claude/claude-config/home/CLAUDE\.md' "$CLAUDE_HOME/CLAUDE.md"; then
+  echo "= $CLAUDE_HOME/CLAUDE.md (локальный, подключает claude-config)"
+else
+  link "claude-config/home/CLAUDE.md" "$CLAUDE_HOME/CLAUDE.md"
+fi
+link "claude-config/home/personal" "$CLAUDE_HOME/personal"
 for skill in "$CONFIG_DIR"/home/personal/skills/*/; do
   name="$(basename "$skill")"
   dst="$CLAUDE_HOME/skills/$name"
@@ -84,8 +105,8 @@ if [[ -n "$choice" ]]; then
     echo "! $USER_LINK — обычный файл, сохраняю как $bak"
     run mv "$USER_LINK" "$bak"
   fi
-  echo "+ $USER_LINK -> users/$choice.md"
-  run ln -sfn "$USERS_DIR/$choice.md" "$USER_LINK"
+  echo "+ $USER_LINK -> personal/users/$choice.md"
+  run ln -sfn "personal/users/$choice.md" "$USER_LINK"
 fi
 
 # Настройки Claude Code: ~/.claude/settings.json -> users/<профиль>.settings.json (рядом с профилем, не в git).
@@ -96,14 +117,15 @@ if [[ -L "$USER_LINK" ]]; then
   prof="$(basename "$(readlink "$USER_LINK")" .md)"
   [[ -n "$choice" ]] && prof="$choice"
   src="$USERS_DIR/$prof.settings.json"
+  rel="personal/users/$prof.settings.json"
   if [[ ! -f "$src" ]]; then
     echo "! нет $src — скопируй шаблон $CONFIG_DIR/home/personal/templates/settings.json (или свой ~/.claude/settings.json),"
     echo "  подставь пути и токены и запусти снова"
-  elif [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$src" ]]; then
-    echo "= $SETTINGS_LINK -> users/$prof.settings.json"
+  elif [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$rel" ]]; then
+    echo "= $SETTINGS_LINK -> $rel"
   elif [[ -L "$SETTINGS_LINK" || ! -e "$SETTINGS_LINK" ]] || cmp -s "$src" "$SETTINGS_LINK"; then
-    echo "+ $SETTINGS_LINK -> users/$prof.settings.json"
-    run ln -sfn "$src" "$SETTINGS_LINK"
+    echo "+ $SETTINGS_LINK -> $rel"
+    run ln -sfn "$rel" "$SETTINGS_LINK"
   else
     echo "! $SETTINGS_LINK — обычный файл и отличается от users/$prof.settings.json (Claude Code переписал ссылку?)."
     echo "  Сравни: diff $SETTINGS_LINK $src — нужное перенеси в $src, потом: rm $SETTINGS_LINK && ./install.sh"

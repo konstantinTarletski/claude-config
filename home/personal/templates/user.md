@@ -57,7 +57,7 @@
 - **USER.DEV.3** ◆ Node: nvm, Node, npm.
 - **USER.DEV.4** git: версии, `core.autocrlf`, чем делать fetch/push.
 - **USER.DEV.5** Docker: версия, WSL-интеграция.
-- **USER.DEV.6** ◆ Где репозитории и `claude-config` (путь в WSL и в Windows) — правила ссылаются сюда.
+- **USER.DEV.6** Где репозитории (путь в WSL и в Windows); `claude-config` — через ссылку `~/.claude/claude-config`.
 
 ## USER.ACC — доступы машины (только имена, значения — в `~/.bashrc`)
 

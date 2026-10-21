@@ -81,8 +81,8 @@ description: Ведение правил — добавить, изменить 
 
 ## RULES.EDIT — как меняем правила
 
-- **RULES.EDIT.2** Изменил что-то в `claude-config` — в конце ответа проверить `git -C <claude-config> status --short`
-  (путь — `USER.DEV.6`) и неотправленные коммиты (`git log --oneline @{u}..`; «no upstream» — ветка ещё ни разу не отправлена, нужен
+- **RULES.EDIT.2** Изменил что-то в `claude-config` — в конце ответа проверить `git -C ~/.claude/claude-config status --short`
+  и неотправленные коммиты (`git log --oneline @{u}..`; «no upstream» — ветка ещё ни разу не отправлена, нужен
   `git push -u origin <ветка>`) и сказать, что не закоммичено. Коммитит и пушит пользователь сам, **из Windows** —
   команды для cmd по одной на строку (`cd <claude-config в Windows>`, `git add …`, `git status --short`,
   `git commit -m "…"`, `git push`); сообщения коммитов — **на английском** (кириллица в `-m` из WSL — `GIT.TRAP.3`).

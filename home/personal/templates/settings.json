@@ -3,7 +3,7 @@
     "allow": [
       "Edit(//<папка репозиториев>/*/.claude/**)",
       "Edit(//<папка репозиториев>/*/CLAUDE.md)",
-      "Edit(//<claude-config>/**)",
+      "Edit(~/.claude/claude-config/**)",
       "Edit(~/.claude/personal/**)",
       "Bash(git status*)",
       "Bash(git log *)",
