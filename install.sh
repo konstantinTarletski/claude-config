@@ -62,13 +62,15 @@ if [[ -n "$PROFILE" ]]; then
 elif [[ -L "$USER_LINK" && -f "$USER_LINK" ]]; then
   echo "= $USER_LINK -> $(readlink "$USER_LINK")"
 elif [[ ${#profiles[@]} -eq 0 ]]; then
-  echo "! профилей нет: создай $USERS_DIR/<имя>_<фирма>.md (копией чужого, переписать всё) и запусти снова"
+  echo "! профилей нет: скопируй $CONFIG_DIR/home/personal/templates/user.md в $USERS_DIR/$(whoami)_<фирма>.md,"
+  echo "  заполни и запусти снова (профиль не в git — RULES.USER.1)"
 elif [[ ${#profiles[@]} -eq 1 && "${profiles[0]}" == "$(whoami)_"* ]]; then
   choice="${profiles[0]}"
 elif [[ ${#profiles[@]} -eq 1 ]]; then
   # Единственный профиль — не по логину: скорее всего чужой. Сказать, что он есть, и не брать молча.
   echo "! есть профиль ${profiles[0]} — он не по твоему логину ($(whoami)), похоже, чужой."
-  echo "  Свой: скопируй его в $USERS_DIR/$(whoami)_<фирма>.md, перепиши все разделы и запусти снова."
+  echo "  Свой: скопируй шаблон $CONFIG_DIR/home/personal/templates/user.md в $USERS_DIR/$(whoami)_<фирма>.md,"
+  echo "  заполни и запусти снова."
   echo "  Всё-таки этот: ./install.sh --profile ${profiles[0]}"
 elif [[ -t 0 ]] && ! $DRY_RUN; then
   echo "С каким профилем работаем на этой машине?"
@@ -84,6 +86,21 @@ if [[ -n "$choice" ]]; then
   fi
   echo "+ $USER_LINK -> users/$choice.md"
   run ln -sfn "$USERS_DIR/$choice.md" "$USER_LINK"
+fi
+
+# Файл фирмы (RULES.USER.2): профиль подключает его строкой @~/.claude/personal/firms/<фирма>.md — есть ли он.
+echo "== фирма"
+if [[ -f "$USER_LINK" ]]; then
+  firm_refs="$(grep -o '^@~/\.claude/personal/firms/[^ ]*\.md' "$USER_LINK" || true)"
+  if [[ -z "$firm_refs" ]]; then
+    echo "! в профиле нет строки @~/.claude/personal/firms/<фирма>.md — создай файл фирмы по"
+    echo "  $CONFIG_DIR/home/personal/templates/firm.md и подключи его в профиле"
+  fi
+  for ref in $firm_refs; do
+    f="$CONFIG_DIR/home/personal/${ref#@~/.claude/personal/}"
+    if [[ -f "$f" ]]; then echo "= $f"
+    else echo "! нет $f — скопируй шаблон $CONFIG_DIR/home/personal/templates/firm.md и заполни"; fi
+  done
 fi
 
 echo "Готово."
