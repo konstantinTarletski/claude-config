@@ -19,3 +19,20 @@
   коллег локально, на окружениях). До сдачи тикета — можно, но сразу дать `UPDATE flyway_schema_history SET checksum =
   <новая> WHERE version = '<версия>'`; сумма — `tools/flyway-checksum.py` (CRC32 по строкам без переводов строк,
   знаковый int; сначала сверить старую с БД). После деплоя на окружения — не трогать, только новой миграцией.
+- **SQL.TRAP.3** [Oracle 19] **Длина `VARCHAR2`: `DATA_LENGTH` — байты, предел — `CHAR_LENGTH`.**
+  **Симптом:** миграция с `INSERT` падает на деплое `ORA-12899: value too large for column … (actual: 268, maximum: 255)`,
+  хотя `all_tab_columns.DATA_LENGTH` = 1020; приложение не стартует.
+  **Причина:** колонка объявлена в символах (`CHAR_USED = 'C'`): `DATA_LENGTH` = символы × 4 байта, предел — `CHAR_LENGTH`.
+  Компиляция и юнит-тесты текст миграции не проверяют.
+  **Как правильно:** длину сверять по `CHAR_LENGTH` и `CHAR_USED`; вставляемый текст — посчитать в символах до коммита.
+  Упавший changeset Liquibase не записывается в `DATABASECHANGELOG` — файл можно поправить без проблем с контрольной суммой
+  (проверить, что строки там нет).
+- **SQL.TRAP.4** [PostgreSQL 18, Java на Windows] **Приложение не подключается: `invalid value for parameter "TimeZone":
+  "Europe/Kiev"`.**
+  **Симптом:** запуск не из IDE (`gradlew bootRun`) падает на старте JPA (`Unable to determine Dialect without JDBC
+  metadata`), в причине — `PSQLException: FATAL: invalid value for parameter "TimeZone": "Europe/Kiev"`; из IDE — работает.
+  **Причина:** часовой пояс Windows «FLE Standard Time» (Эстония, Финляндия, Украина) Java переводит в `Europe/Kiev`,
+  драйвер передаёт его серверу, а в базе tzdata у PostgreSQL этого старого имени уже нет (`Europe/Kyiv`). IDE в своей
+  конфигурации запуска задаёт пояс явно.
+  **Как правильно:** задать пояс JVM явно: `-Duser.timezone=Europe/Tallinn` (через `JAVA_TOOL_OPTIONS` в той же команде:
+  `cmd.exe /c "set JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Tallinn&& … gradlew.bat bootRun"`).

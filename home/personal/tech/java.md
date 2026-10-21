@@ -1,6 +1,7 @@
 # JAVA — Java и библиотеки Java-мира (Spring, Jackson, MapStruct, JUnit)
 
-Сборка (Gradle) — `tech/gradle.md`; OpenAPI — `tech/api.md`; WSL — `tech/wsl.md`.
+Сборка (Gradle) — `tech/gradle.md`; OpenAPI — `tech/api.md`; WSL — `tech/wsl.md`. MapStruct — `JAVA.RULE.1–4`,
+`JAVA.TRAP.6` (все с меткой `[MapStruct]`).
 
 ## JAVA.SETUP — установка
 
@@ -45,6 +46,13 @@
   (`StringUtils.isNotBlank`), не ручное `!= null && !isBlank()`. Юнит-тест — `new XxxMapper() {}`. Перед правкой маппера —
   соседние мапперы (`CODE.RULE.6`; `JAVA.RULE.1–2` — тоже про MapStruct).
 
+- **JAVA.RULE.4** [MapStruct] **Копирование полей — через `@Mapping` и методы маппинга, не руками.** Вложенный
+  объект, поля из двух источников, разные имена — метод маппинга (в т.ч. с несколькими параметрами:
+  `Target toX(A a, B b)` + `@Mapping(source = "b.fieldX", target = "x")`), одноимённые поля MapStruct возьмёт сам.
+  Руками (`default`-метод, `new X().a(…).b(…)`) — только то, чего MapStruct не выражает: проверка `null` / выбор
+  ветки, вычисляемый текст; и такой метод — коротким, вызывающим метод маппинга. После — открыть `*MapperImpl` и
+  проверить, откуда какое поле берётся (`JAVA.RULE.1`).
+
 ## JAVA.TRAP — грабли
 
 - **JAVA.TRAP.1** [Jackson 3] **Не видит `@JsonProperty` на унаследованных полях.**
@@ -82,3 +90,10 @@
   **Причина:** Spring-прокси не перехватывает self-invocation (`this.cachedMethod()`).
   **Как правильно:** кэшируемые вызовы — в отдельный бин (`*CacheService`) и вызывать его снаружи. То же для
   `@Transactional`, `@Async` и других аннотаций через прокси.
+- **JAVA.TRAP.6** [MapStruct] **`@Mapping` во вложенное поле теряет его остальные поля.**
+  **Симптом:** `@Mapping(source = "arrivalTime", target = "resource.arrivalTime")` — в ответе у `resource` есть только
+  эти поля, а `id`, `name` (одноимённые в связанном объекте-источнике) пустые; при пустых источниках — `{}` вместо `null`.
+  **Причина:** при `@Mapping` с `target = "x.y"` MapStruct собирает `x` только из таких вложенных `@Mapping`, автомаппинг
+  одноимённых полей `x` из другого источника не делает; объект `x` создаёт всегда.
+  **Как правильно:** для вложенного объекта — свой метод маппинга (`X toX(A a, B b)` + `@Mapping` только для разных
+  имён, `JAVA.RULE.4`), `null` — коротким `default`-методом вокруг него. Проверять по `*MapperImpl`.

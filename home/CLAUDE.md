@@ -59,7 +59,8 @@
 - **`personal/tech/`:** `CODE` · `JAVA` · `GRADL` (gradle.md) · `API` · `NODE` · `NG` · `GIT` · `WSL` · `TLS` · `SQL`.
 - **Утилиты `personal/tools/`** (`FILES.TOOLS`, не грузятся): `jira.py` тикет текстом (`--attach`, `--changelog`);
   `wiki.py` страница → текст с `[+новое+]` `~~убрано~~`; `bb-pr.py` PR: статус, ревьюеры, сборка, комментарии;
-  `test-count.sh` тесты в JUnit-отчётах и их свежесть; `flyway-checksum.py` контрольная сумма миграции.
+  `test-count.sh` тесты в JUnit-отчётах и их свежесть; `flyway-checksum.py` контрольная сумма миграции;
+  `jira-worklog.py` журнал часов → worklog Jira один в один и сверка в обе стороны (`/timelog-askend`).
 - **Проект:** `<repo>/CLAUDE.md` (`PROJ.*`, метка версии) + `<repo>/.claude/` (те же коды, `tickets/`, `tools/`) —
   скрыто через `.git/info/exclude`.
 

@@ -19,20 +19,20 @@
 
 ```
 ~/.claude/                                         # симлинки в /mnt/c/code/claude-config/home
-├── CLAUDE.md                              8.3 КБ  # RULES (как читать), коды файлов и утилиты, @-импорты
+├── CLAUDE.md                              8.4 КБ  # RULES (как читать), коды файлов и утилиты, @-импорты
 ├── user.md       USER                             # симлинк на активный профиль (не в git, RULES.USER.1)
 ├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
 │   ├── users/                                     # ПРОФИЛИ — @ только активный (через user.md)
-│   │   └── tarlekon_askend.md           11.2 КБ   # я и окружение в Askend: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
+│   │   └── tarlekon_askend.md           12.0 КБ   # я и окружение в Askend: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT
 │   ├── rules/                                     # КАК РАБОТАЕМ — @, всегда
-│   │   ├── comm.md       COMM           10.8 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
-│   │   ├── work.md       WORK           11.8 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
+│   │   ├── comm.md       COMM           11.1 КБ   # язык и перевод, коротко, учёба, объяснения, вопросы, «пошло не так»
+│   │   ├── work.md       WORK           12.1 КБ   # тикет, дисциплина, прогоны, проверка, ревью, оценка, сдача
 │   │   ├── safe.md       SAFE            3.4 КБ   # секреты, чужое, разрушительные шаги, разрешения
-│   │   ├── files.md      FILES          10.0 КБ   # что куда писать, документы задач, утилиты
-│   │   └── integ.md      INTEG           5.9 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
+│   │   ├── files.md      FILES          10.7 КБ   # что куда писать, документы задач, утилиты
+│   │   └── integ.md      INTEG           6.2 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
 │   │   ├── code.md       CODE            5.8 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            9.7 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
+│   │   ├── java.md       JAVA            11.8 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
 │   │   ├── gradle.md     GRADL           4.2 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok (бэк)
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            5.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
@@ -40,18 +40,19 @@
 │   │   ├── git.md        GIT             2.2 КБ   # CRLF, HTTPS из WSL, коммит из cmd
 │   │   ├── wsl.md        WSL             7.7 КБ   # окружение; localhost, Docker, симлинки, CRLF, форматтер
 │   │   ├── tls.md        TLS             2.2 КБ   # PKIX, неполная цепочка
-│   │   └── sql.md        SQL             2.5 КБ   # Flyway: удалённый R__-файл, правка применённой V    (бэк)
+│   │   └── sql.md        SQL             3.6 КБ   # Flyway: удалённый R__, правка V; Oracle: длина VARCHAR2 (бэк)
 │   ├── tools/                                     # УТИЛИТЫ (FILES.TOOLS) — не грузятся, запускаются
 │   │   ├── jira.py                                # тикет текстом, --attach, --changelog
+│   │   ├── jira-worklog.py                        # журнал часов → worklog Jira один в один, сверка (/timelog-askend)
 │   │   ├── wiki.py                                # страница → текст с пометками [+новое+] ~~убрано~~, вложения
 │   │   ├── bb-pr.py                               # PR: статус, ревьюеры, сборка, комментарии
 │   │   ├── test-count.sh                          # тесты в JUnit-отчётах и их свежесть
 │   │   └── flyway-checksum.py                     # контрольная сумма миграции
 │   ├── skills/<имя>/SKILL.md                      # ПРОЦЕДУРЫ по вызову: rules (ведение правил + переезд версий:
 │   │                                              #   v1-to-v2.md, v2.0-to-v2.1.md), ticket, estimate,
-│   │                                              #   commit-message, review-lessons, timelog
+│   │                                              #   commit-message, review-lessons, timelog-askend
 │   ├── statusline/                                # скрипт строки состояния
-│   └── templates/                                 # ticket.md — документ задачи; project/ — заготовка проекта
+│   └── templates/                                 # ticket.md — документ задачи; timelog-askend.md — часы проекта; project/ — заготовка
 └── projects/<проект>/memory/                      # память ассистента (контекст разговоров, не факты — они в USER)
 
 <repo>/                                            # скрыто через .git/info/exclude
@@ -60,12 +61,12 @@
     ├── work.md  integ.md  …                       # отличия от общих правил — те же номера (RULES.PROJ)
     ├── tech/<тех>.md                              # проектные SETUP / RULE / TRAP
     ├── review.md                                  # замечания ревью (WORK.REVW)
-    ├── <скилл>.md                                 # настройки скилла (timelog.md) — без @
+    ├── <скилл>.md                                 # настройки скилла (timelog-askend.md) — без @
     ├── tools/  skills/                            # утилиты и процедуры проекта
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **105.7 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + `rules/` + `tech/`): **111.3 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
