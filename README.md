@@ -40,7 +40,7 @@
 │   │   ├── files.md      FILES          12.3 КБ   # что куда писать, документы задач и их «Связи», утилиты
 │   │   └── integ.md      INTEG           6.3 КБ   # токены, VPN, трекер, wiki, git-сервер, логи, почта, чат
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
-│   │   ├── code.md       CODE            5.8 КБ   # общее для любого кода + журнал замечаний ревью
+│   │   ├── code.md       CODE            6.1 КБ   # общее для любого кода + журнал замечаний ревью
 │   │   ├── java.md       JAVA            11.8 КБ   # sdkman; MapStruct; Jackson 3, Spring, JUnit, логи в тестах (бэк)
 │   │   ├── gradle.md     GRADL           4.2 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok (бэк)
 │   │   ├── api.md        API             1.1 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
