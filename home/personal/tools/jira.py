@@ -3,7 +3,7 @@
 
   jira.py <KEY> --url <https://jira…> --token-env <ИМЯ_ПЕРЕМЕННОЙ> [--attach <папка>] [--changelog]
 
---attach   скачать вложения в папку с приставкой <KEY>.in. (FILES.DOCS.2)
+--attach   скачать вложения в папку с приставкой <KEY>.in. (FILES.DOCS.1)
 --changelog  история смены статусов (кто, когда)
 Токен — из переменной окружения (INTEG.ALL); адрес и имя переменной — INTEG.TRACK проекта.
 """

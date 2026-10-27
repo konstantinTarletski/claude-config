@@ -1,7 +1,7 @@
 __pycache__/
 .idea/
 
-# Личное — не в публичный репозиторий (RULES.USER.1–2): профиль и файл фирмы, шаблоны — в home/personal/templates/
+# Личное (до 3.0 лежало здесь; с 3.0 — ~/.claude/private) — на случай старой раскладки не попасть в публичный репозиторий
 home/personal/users/*.md
 home/personal/users/*.json
 home/personal/firms/*.md

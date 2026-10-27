@@ -4,7 +4,7 @@
   wiki.py <id | ссылка на страницу | короткая ссылка /x/…> --url <https://wiki…> --token-env <ИМЯ> [--out <файл>]
           [--attachments] [--children]
 
---out          сохранить текст в файл (для документа задачи: <KEY>.in.wiki-<id>.txt — FILES.DOCS.2), иначе в stdout
+--out          сохранить текст в файл (для документа задачи: <KEY>.in.wiki-<id>.txt — FILES.DOCS.1), иначе в stdout
 --attachments  список вложений (диаграммы, картинки) — INTEG.WIKI.3
 --children     список подстраниц
 Зелёный текст считается «новым», <s> — «убранным» (INTEG.WIKI.4).

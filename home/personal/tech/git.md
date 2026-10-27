@@ -1,32 +1,14 @@
 # GIT — git
 
-## GIT.TRAP — грабли
-
-- **GIT.TRAP.1** **WSL-git показывает изменёнными все файлы репозитория.**
-  **Симптом:** в WSL `git status` — сотни `M`, `git diff --stat` — «N insertions(+), N deletions(-)» с равными числами;
-  `git diff --ignore-cr-at-eol` пуст.
-  **Причина:** репозиторий выкачан Windows-git'ом с `core.autocrlf=true` (системный конфиг
-  `C:/Program Files/Git/etc/gitconfig`): в рабочей копии CRLF, в индексе LF. WSL-git этого конфига не видит.
-  **Как правильно:** статус, дифф и коммит — Windows-git'ом: `cmd.exe /c "git status --short"`,
-  `cmd.exe /c "git diff --numstat"` или IDE. Проверить: `cmd.exe /c "git config --show-origin core.autocrlf"`. Из WSL
-  `git add -A` не делать — закоммитит CRLF во все файлы. Новые файлы можно писать с LF — Windows-git при коммите
-  нормализует («LF will be replaced by CRLF» — нормально).
-- **GIT.TRAP.2** **Git по HTTPS из WSL: «could not read Username».**
-  **Симптом:** `git fetch` в WSL → `fatal: could not read Username for 'https://…'`.
-  **Причина:** учётные данные хранит только Windows-git (Credential Manager).
-  **Как правильно:** `fetch`/`pull`/`push` — Windows-git'ом (`cmd.exe /c "git fetch origin"`) или из IDE. Без этого
-  локальные `origin/*` в WSL могут быть устаревшими — учитывать, если на них завязано сравнение веток.
-- **GIT.TRAP.3** **`cmd.exe /c "git commit -m \"…\""` с кириллицей или тире — «pathspec … did not match».**
-  **Причина:** `cmd` из WSL разбивает такое сообщение на отдельные аргументы; коммит не создаётся.
-  **Как правильно:** сообщение — файлом: `printf '%s\n' "<сообщение>" > .git/MSG_TMP` →
-  `cmd.exe /c "git commit -F .git/MSG_TMP"` → удалить файл. Так же для `git tag -a -F`.
-- **GIT.TRAP.4** [git 2.43] **Игнорируемый файл пропал после переключения ветки.**
-  **Симптом:** файл в `.gitignore` (личный, не в git) после `git switch` / `checkout` / `merge` на другую ветку исчез или
-  стал старым; `git status` молчит.
-  **Причина:** в той ветке или коммите этот путь ещё **отслеживался** (файл убрали из git позже, `git rm --cached`).
-  Игнорируемые файлы git считает расходными: при переходе туда молча перезаписывает их версией из коммита, при переходе
-  обратно — удаляет как отслеживаемый. Так 21.10.2026 стёрся профиль при `switch` на старый `main` и `merge --ff-only`.
-  **Как правильно:** перед `switch` / `checkout` / `merge` / `pull` в рабочей копии с личными игнорируемыми файлами —
-  проверить, отслеживался ли путь там (`git ls-tree -r <ветка> --name-only | grep <путь>`), и **сначала снять копию** вне
-  репозитория; после — сверить (`cmp`). Слить ветку без переключения: `git push origin <ветка>:main` (fast-forward) или
-  `git fetch . <ветка>:main`.
+- **GIT.TRAP.1** В WSL `git status` — сотни `M`, `diff --stat` с равными «+» и «−», `diff --ignore-cr-at-eol` пуст →
+  выкачан Windows-git'ом с `core.autocrlf=true` (его системный конфиг WSL-git не видит) → статус, дифф, коммит —
+  Windows-git'ом (`cmd.exe /c "git status --short"`) или IDE; из WSL `git add -A` не делать. Новые файлы с LF — можно.
+- **GIT.TRAP.2** `git fetch` в WSL → «could not read Username» → учётные данные только у Windows-git →
+  `cmd.exe /c "git fetch origin"` или IDE; без этого локальные `origin/*` в WSL устаревают.
+- **GIT.TRAP.3** `cmd.exe /c "git commit -m \"…\""` с кириллицей или тире → «pathspec … did not match» → `cmd` режет
+  сообщение → файлом: `printf '%s\n' "<сообщение>" > .git/MSG_TMP` → `cmd.exe /c "git commit -F .git/MSG_TMP"` →
+  удалить файл. Так же `git tag -a -F`.
+- **GIT.TRAP.4** [git 2.43] Личный игнорируемый файл пропал или стал старым после `switch` / `checkout` / `merge` →
+  в той ветке путь ещё отслеживался, git молча перезаписал и потом удалил его (так 21.10.2026 стёрся профиль) → перед
+  переключением проверить `git ls-tree -r <ветка> --name-only | grep <путь>` и снять копию вне репозитория; слить без
+  переключения — `git fetch . <ветка>:main`.

@@ -2,7 +2,10 @@
 # Разворачивает claude-config: симлинки в ~/.claude (CLAUDE.md, personal/, скиллы, user.md — активный профиль,
 # settings.json). Путь к репозиторию — ОДНА ссылка ~/.claude/claude-config, остальные — относительные через неё:
 # переехал репозиторий — поменять только её (или ./install.sh из нового места).
-# Повторный запуск безопасен. Использование: ./install.sh [--dry-run] [--profile <имя>_<фирма>]
+# Личное (профили, файлы фирм, settings.json) — вне репозитория, в ~/.claude/private/{users,firms}; это папка или
+# ссылка на неё (WSL: --private /mnt/c/Users/<user>/.claude/private — те же файлы видны и из Windows).
+# Повторный запуск безопасен. Использование: ./install.sh [--dry-run] [--profile <имя>_<фирма>] [--private <папка>]
+#   [--migrate] — переход с 2.x: скопировать профили и фирмы из home/personal/{users,firms} в ~/.claude/private.
 set -euo pipefail
 
 CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,10 +13,14 @@ CLAUDE_HOME="${CLAUDE_HOME:-$HOME/.claude}"
 HUB="$CLAUDE_HOME/claude-config"
 DRY_RUN=false
 PROFILE=""
+PRIVATE_SRC=""
+MIGRATE=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=true ;;
     --profile) PROFILE="${2:-}"; shift ;;
+    --private) PRIVATE_SRC="${2:-}"; shift ;;
+    --migrate) MIGRATE=true ;;
     *) echo "Неизвестный параметр: $1" >&2; exit 1 ;;
   esac
   shift
@@ -70,16 +77,63 @@ for skill in "$CONFIG_DIR"/home/personal/skills/*/; do
   [[ -L "$dst" ]] || { echo "+ $dst"; run mkdir -p "$CLAUDE_HOME/skills"; run ln -s "../personal/skills/$name" "$dst"; }
 done
 
-# Профиль (RULES.USER.1): ~/.claude/user.md -> personal/users/<имя>_<фирма>.md.
+# Личное (RULES.USER.1–2): ~/.claude/private — папка или ссылка (--private); в ней users/ и firms/.
+echo "== личное"
+PRIVATE="$CLAUDE_HOME/private"
+if [[ -n "$PRIVATE_SRC" ]]; then
+  [[ -d "$PRIVATE_SRC" ]] || { echo "+ $PRIVATE_SRC"; run mkdir -p "$PRIVATE_SRC/users" "$PRIVATE_SRC/firms"; }
+  if [[ -L "$PRIVATE" && "$(readlink "$PRIVATE")" == "$PRIVATE_SRC" ]]; then
+    echo "= $PRIVATE -> $PRIVATE_SRC"
+  elif [[ -e "$PRIVATE" && ! -L "$PRIVATE" ]]; then
+    echo "! $PRIVATE — уже папка; перенеси её содержимое в $PRIVATE_SRC и убери, потом запусти снова" >&2; exit 1
+  else
+    echo "+ $PRIVATE -> $PRIVATE_SRC"
+    run ln -sfn "$PRIVATE_SRC" "$PRIVATE"
+  fi
+elif [[ -L "$PRIVATE" ]]; then
+  echo "= $PRIVATE -> $(readlink "$PRIVATE")"
+elif [[ -d "$PRIVATE" ]]; then
+  echo "= $PRIVATE"
+else
+  echo "+ $PRIVATE"
+  run mkdir -p "$PRIVATE/users" "$PRIVATE/firms"
+fi
+# До 3.0 профили и фирмы лежали в репозитории: --migrate копирует их сюда (оригиналы не трогает, своё не затирает).
+OLD="$CONFIG_DIR/home/personal"
+if ls "$OLD"/users/* "$OLD"/firms/* >/dev/null 2>&1; then
+  if $MIGRATE; then
+    for d in users firms; do
+      for f in "$OLD/$d"/*; do
+        [[ -f "$f" ]] || continue
+        if [[ -e "$PRIVATE/$d/$(basename "$f")" ]]; then echo "= $PRIVATE/$d/$(basename "$f") (уже есть, не трогаю)"
+        else echo "+ $PRIVATE/$d/$(basename "$f")"; run mkdir -p "$PRIVATE/$d"; run cp -p "$f" "$PRIVATE/$d/"
+          # строка подключения фирмы в профиле: @~/.claude/personal/firms/ -> @~/.claude/private/firms/
+          [[ "$d" == users && "$f" == *.md ]] &&
+            run sed -i 's#^@~/\.claude/personal/firms/#@~/.claude/private/firms/#' "$PRIVATE/$d/$(basename "$f")"
+        fi
+      done
+    done
+    echo "  Проверь, что всё на месте, потом удали старое: rm -r $OLD/users $OLD/firms"
+  else
+    echo "! в репозитории остались профили или фирмы (до 3.0) — скопировать их в $PRIVATE: ./install.sh --migrate"
+  fi
+fi
+
+# Профиль (RULES.USER.1): ~/.claude/user.md -> private/users/<имя>_<фирма>.md.
 # Уже выбран и файл есть — не трогать; --profile — взять его; один профиль — взять молча; несколько — спросить.
 echo "== профиль"
-USERS_DIR="$CONFIG_DIR/home/personal/users"
+USERS_DIR="$PRIVATE/users"
 USER_LINK="$CLAUDE_HOME/user.md"
 mapfile -t profiles < <(ls "$USERS_DIR"/*.md 2>/dev/null | xargs -r -n1 basename | sed 's/\.md$//')
 choice=""
 if [[ -n "$PROFILE" ]]; then
   [[ -f "$USERS_DIR/$PROFILE.md" ]] || { echo "! нет профиля $USERS_DIR/$PROFILE.md" >&2; exit 1; }
   choice="$PROFILE"
+elif [[ -L "$USER_LINK" && "$(readlink "$USER_LINK")" == personal/users/* ]]; then
+  # профиль до 3.0 — переставить на private, если он туда уже скопирован (--migrate)
+  old_prof="$(basename "$(readlink "$USER_LINK")" .md)"
+  if [[ -f "$USERS_DIR/$old_prof.md" ]] || $DRY_RUN; then choice="$old_prof"
+  else echo "! $USER_LINK -> $(readlink "$USER_LINK") (до 3.0) — сначала ./install.sh --migrate"; fi
 elif [[ -L "$USER_LINK" && -f "$USER_LINK" ]]; then
   echo "= $USER_LINK -> $(readlink "$USER_LINK")"
 elif [[ ${#profiles[@]} -eq 0 ]]; then
@@ -105,8 +159,8 @@ if [[ -n "$choice" ]]; then
     echo "! $USER_LINK — обычный файл, сохраняю как $bak"
     run mv "$USER_LINK" "$bak"
   fi
-  echo "+ $USER_LINK -> personal/users/$choice.md"
-  run ln -sfn "personal/users/$choice.md" "$USER_LINK"
+  echo "+ $USER_LINK -> private/users/$choice.md"
+  run ln -sfn "private/users/$choice.md" "$USER_LINK"
 fi
 
 # Настройки Claude Code: ~/.claude/settings.json -> users/<профиль>.settings.json (рядом с профилем, не в git).
@@ -117,7 +171,7 @@ if [[ -L "$USER_LINK" ]]; then
   prof="$(basename "$(readlink "$USER_LINK")" .md)"
   [[ -n "$choice" ]] && prof="$choice"
   src="$USERS_DIR/$prof.settings.json"
-  rel="personal/users/$prof.settings.json"
+  rel="private/users/$prof.settings.json"
   if [[ ! -f "$src" ]]; then
     echo "! нет $src — скопируй шаблон $CONFIG_DIR/home/personal/templates/settings.json (или свой ~/.claude/settings.json),"
     echo "  подставь пути и токены и запусти снова"
@@ -132,16 +186,16 @@ if [[ -L "$USER_LINK" ]]; then
   fi
 fi
 
-# Файл фирмы (RULES.USER.2): профиль подключает его строкой @~/.claude/personal/firms/<фирма>.md — есть ли он.
+# Файл фирмы (RULES.USER.2): профиль подключает его строкой @~/.claude/private/firms/<фирма>.md — есть ли он.
 echo "== фирма"
 if [[ -f "$USER_LINK" ]]; then
-  firm_refs="$(grep -o '^@~/\.claude/personal/firms/[^ ]*\.md' "$USER_LINK" || true)"
+  firm_refs="$(grep -o '^@~/\.claude/private/firms/[^ ]*\.md' "$USER_LINK" || true)"
   if [[ -z "$firm_refs" ]]; then
-    echo "! в профиле нет строки @~/.claude/personal/firms/<фирма>.md — создай файл фирмы по"
+    echo "! в профиле нет строки @~/.claude/private/firms/<фирма>.md — создай файл фирмы по"
     echo "  $CONFIG_DIR/home/personal/templates/firm.md и подключи его в профиле"
   fi
   for ref in $firm_refs; do
-    f="$CONFIG_DIR/home/personal/${ref#@~/.claude/personal/}"
+    f="$PRIVATE/${ref#@~/.claude/private/}"
     if [[ -f "$f" ]]; then echo "= $f"
     else echo "! нет $f — скопируй шаблон $CONFIG_DIR/home/personal/templates/firm.md и заполни"; fi
   done
