@@ -1,4 +1,4 @@
-<!-- claude-config: 3.0 -->
+<!-- claude-config: 3.1 -->
 # CLAUDE.md — <проект>
 
 <!-- Заготовка нового проекта: скопировать CLAUDE.md в <repo>/, папку .claude/ — в <repo>/.claude/; скрыть через
