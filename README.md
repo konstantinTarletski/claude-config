@@ -102,19 +102,19 @@
 │   │   ├── comm.md       COMM            5.0 КБ   # перевод, форма ответа, учёба, объяснения, вопросы, «пошло не так»
 │   │   ├── work.md       WORK            4.7 КБ   # что всегда: ветка, коммит, фоновые прогоны, сборка, ревью
 │   │   ├── safe.md       SAFE            1.7 КБ   # секреты, папки пользователя, удаление, правка файлов
-│   │   ├── files.md      FILES           6.1 КБ   # что куда писать, какие грабли записывать, документы задач, утилиты
+│   │   ├── files.md      FILES           6.6 КБ   # что куда писать, какие грабли записывать, документы задач, утилиты
 │   │   └── integ.md      INTEG           3.0 КБ   # токены, VPN, что не видно в тикете и в wiki
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
 │   │   ├── code.md       CODE            4.0 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            4.4 КБ   # sdkman; MapStruct; Jackson 3, Spring 4.0, логи в тестах (бэк)
-│   │   ├── gradle.md     GRADL           2.5 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok, Windows-демон (бэк)
+│   │   ├── java.md       JAVA            4.0 КБ   # sdkman; MapStruct; Jackson 3, логи в тестах (бэк)
+│   │   ├── gradle.md     GRADL           1.9 КБ   # gradlew в WSL, отчёты, Lombok, Windows-демон (бэк)
 │   │   ├── api.md        API             0.6 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
-│   │   ├── node.md       NODE            2.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
-│   │   ├── ng.md         NG              1.3 КБ   # effect/untracked; ng-zorro, шаблоны                     (фронт)
+│   │   ├── node.md       NODE            1.2 КБ   # nvm; node_modules из Windows                     (фронт)
+│   │   ├── ng.md         NG              0.6 КБ   # effect/untracked                                       (фронт)
 │   │   ├── git.md        GIT             1.7 КБ   # CRLF, HTTPS из WSL, коммит из cmd, ignored-файл при смене ветки
-│   │   ├── wsl.md        WSL             3.6 КБ   # окружение; localhost, Docker / Rancher, симлинки, CRLF, форматтер
-│   │   ├── tls.md        TLS             1.0 КБ   # PKIX, неполная цепочка
-│   │   └── sql.md        SQL             2.3 КБ   # Flyway: удалённый R__, правка V; Oracle: VARCHAR2; PG: пояс JVM (бэк)
+│   │   ├── wsl.md        WSL             1.9 КБ   # окружение; localhost, симлинки, форматтер
+│   │   ├── tls.md        TLS             0.6 КБ   # PKIX в чужом сервисе
+│   │   └── sql.md        SQL             1.9 КБ   # Flyway: удалённый R__, правка V; PG: пояс JVM (бэк)
 │   ├── tools/                                     # УТИЛИТЫ (FILES.TOOLS) — не грузятся, запускаются
 │   │   ├── jira.py                                # тикет текстом, --attach, --changelog
 │   │   ├── jira-worklog.py                        # журнал часов → worklog Jira один в один, сверка (/timelog-askend)
@@ -144,7 +144,7 @@
     └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
 ```
 
-Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **71.6 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
+Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **67.1 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
 
 **Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
 `.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом

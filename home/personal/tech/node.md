@@ -11,10 +11,3 @@ Angular — `tech/ng.md`; WSL — `tech/wsl.md`.
 - **NODE.TRAP.1** В WSL `npm run build` / `vitest` падают на всех файлах (`Failed to resolve import "@core/…"`) →
   `node_modules` ставились Windows-Node (`@esbuild/win32-x64`) → запускать Windows-Node: `cmd.exe /c "cd /d C:\… && npm
   test"`; не переустанавливать без спроса.
-- **NODE.TRAP.2** `curl` к внутреннему реестру — 200, а `npm` — `SELF_SIGNED_CERT_IN_CHAIN` → Node не видит системные CA
-  Linux → `export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt` в `~/.bashrc`; `strict-ssl=false` — нельзя.
-- **NODE.TRAP.4** После смены ветки `ng build` / `tsc` — «Could not find builder», сотни «Cannot find module» →
-  `node_modules` от другой мажорной версии → `npm ci` на нужной ветке (только с согласия); без этого — `tsc --noEmit` и
-  ошибки по своим файлам.
-- **NODE.TRAP.5** `npx prettier --check` ругается на файлы с правкой в 1–2 строки → prettier не в `devDependencies`,
-  `npx` берёт свежую версию → не прогонять по чужим файлам; новые — `--write`, в изменённых — стиль соседнего кода.

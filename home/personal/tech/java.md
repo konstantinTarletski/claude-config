@@ -3,7 +3,7 @@
 Сборка — `tech/gradle.md`; OpenAPI — `tech/api.md`.
 
 - **JAVA.SETUP.1** Версия Java → из проекта: `sourceCompatibility` / `toolchain`, `pom.xml`, образ в `Dockerfile`; версия
-  Gradle-wrapper (старый Gradle на новой Java не стартует — `GRADL.TRAP.2`).
+  Gradle-wrapper (старый Gradle на новой Java не стартует).
 - **JAVA.SETUP.2** JDK в WSL → sdkman: `sdk install java <ver>` / `sdk use java <ver>`, дистрибутив как у команды
   (`-amzn`, `-tem`); нет нужной — поставить и сказать. Windows-JDK через `cmd.exe` (`GRADL.TRAP.1`) — только временно,
   сказав, чего не хватает.
@@ -26,9 +26,6 @@
 - **JAVA.TRAP.1** [Jackson 3] Поля родителя (`id`, `version`) у наследника молча `null` (модели openapi-generator с
   `allOf` → `extends`) → Jackson 3 иначе читает аннотации на полях родителя → такие модели читать Jackson 2
   `ObjectMapper`'ом.
-- **JAVA.TRAP.2** [Spring 4.0] RestTemplate: `UnrecognizedPropertyException` на лишних полях, нет `setBasicAuth` и
-  `HttpHeaders.AUTHORIZATION` → в 4.0 конвертер создаёт голый `ObjectMapper` (`FAIL_ON_UNKNOWN_PROPERTIES=true`),
-  хелперы — с 5.1 → DTO с `@JsonIgnoreProperties(ignoreUnknown = true)`, Basic — вручную через `Base64`.
 - **JAVA.TRAP.4** [JUnit 5 parallel, Logback] Тест логов через `ListAppender` на общем логгере «иногда» падает в полном
   прогоне → классы идут параллельно, в логгер пишут другие → фильтровать события по текущему потоку. Перехват пустой →
   [Spring Boot] параллельный тест со Spring-контекстом делает `LoggerContext.reset()` и снимает appender'ы → такой тест

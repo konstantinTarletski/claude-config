@@ -7,13 +7,8 @@ Java и установка — `tech/java.md`; WSL и окончания стр�
   gradlew"` (просто `checkout` не перепишет). То же для `mvnw`, `*.sh`.
   Запасной вариант (JDK или доступы только в Windows) → `cmd.exe /c "set JAVA_HOME=C:\Users\<user>\.jdks\<jdk>&&
   gradlew.bat …"` — без пробела перед `&&`.
-- **GRADL.TRAP.2** [Gradle 7.x] «Unsupported class file major version» → Gradle 7.6 не знает Java > 19 → нужная Java в
-  sdkman (`JAVA.SETUP.2`), временно — JDK из IntelliJ (`.jdks`) через `cmd.exe`.
 - **GRADL.TRAP.3** Сборка упала, а в `build/test-results/**/TEST-*.xml` «всё зелёное» → Gradle не чистит старые отчёты
   → смотреть код выхода и время XML; цифры — только из свежих (`tools/test-count.sh`).
-- **GRADL.TRAP.4** Класса из внутренней библиотеки нет в репозитории → это артефакт → исходники (`*-sources.jar`) в
-  `~/.gradle/caches/modules-2/files-2.1/<group>/<artifact>/<version>/` (Windows — `C:\Users\<user>\.gradle\…`, Maven —
-  `~/.m2/repository/…`), распаковать в scratchpad. Баг там → `WORK.DISC.7`.
 - **GRADL.TRAP.6** [Lombok] После смены ветки `compileJava` — «100 errors» (`cannot find symbol log`) → сломалась
   инкрементальная компиляция, код в порядке → `compileJava --rerun-tasks`.
 - **GRADL.TRAP.7** [Gradle 8.11, WSL 3.0] Сборка в WSL: `Input/output error` из `DefaultFileLockManager`, потом модуль
