@@ -134,7 +134,7 @@
 │   │   ├── session-time.py                        # часы по сессии: разбор / реализация (для /estimate)
 │   │   └── flyway-checksum.py                     # контрольная сумма миграции
 │   ├── skills/<имя>/SKILL.md                      # ПРОЦЕДУРЫ по вызову: rules (ведение правил + переезд версий:
-│   │                                              #   v1-to-v2.md … v2.2-to-v3.0.md), ticket (8 шагов), estimate,
+│   │                                              #   v1-to-v2.md … v2.2-to-v3.0.md), ticket (по шагам), estimate,
 │   │                                              #   commit-message, review-lessons, timelog-askend
 │   ├── statusline/                                # скрипт строки состояния
 │   └── templates/                                 # user.md — профиль; firm.md — фирма; settings.json — настройки
