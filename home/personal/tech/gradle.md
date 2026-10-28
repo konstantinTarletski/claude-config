@@ -21,3 +21,7 @@ Java и установка — `tech/java.md`; WSL и окончания стр�
   держит замки в `<repo>/.gradle/` → `cmd.exe /c "set JAVA_HOME=<Windows-JDK>&& gradlew.bat --stop"`; демоны другой Java
   `--stop` не видит → `Stop-Process` по `GradleDaemon` в `Get-CimInstance Win32_Process`. Одну папку из Windows и WSL
   одновременно не собирать. (×2, 27.10.2026)
+- **GRADL.TRAP.8** [Gradle 8.11] Папка (`node_modules`, `dist`) пропадает «сама», без сборки → в `build.gradle`
+  `tasks.register('x') { delete … }` — `delete` не в `doLast`, а в настройке задачи: срабатывает при любой полной
+  настройке проекта (синхронизация IntelliJ, `gradlew tasks --all`) → проверить: создать папку, `gradlew tasks --all`;
+  обходить — ставить заново после синхронизации, чинить — `doLast { delete … }` (команда проекта). (×2, 28.10.2026)

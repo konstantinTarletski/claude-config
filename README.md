@@ -107,7 +107,7 @@
 │   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
 │   │   ├── code.md       CODE            4.0 КБ   # общее для любого кода + журнал замечаний ревью
 │   │   ├── java.md       JAVA            4.4 КБ   # sdkman; MapStruct; Jackson 3, Spring 4.0, логи в тестах (бэк)
-│   │   ├── gradle.md     GRADL           2.5 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok, Windows-демон (бэк)
+│   │   ├── gradle.md     GRADL           3.1 КБ   # gradlew в WSL, старый Gradle, отчёты, исходники, Lombok, Windows-демон (бэк)
 │   │   ├── api.md        API             0.6 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
 │   │   ├── node.md       NODE            2.1 КБ   # nvm; node_modules, npm и сертификаты, npx-форматтер      (фронт)
 │   │   ├── ng.md         NG              1.3 КБ   # effect/untracked; ng-zorro, шаблоны                     (фронт)
