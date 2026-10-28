@@ -16,4 +16,4 @@
 - **SQL.TRAP.4** [PostgreSQL 17–18, Java на Windows] Старт падает (`Unable to determine Dialect`, `HikariPool … Failed to
   initialize pool`), в причине — `invalid value for parameter "TimeZone": "Europe/Kiev"` → пояс Windows «FLE Standard
   Time» Java переводит в `Europe/Kiev`, а в tzdata PostgreSQL его уже нет → задать пояс JVM:
-  `JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Tallinn` (в команде, в `.env` или в конфигурации IDE).
+  `JAVA_TOOL_OPTIONS=-Duser.timezone=Europe/Tallinn` (в команде, в `.env` или в конфигурации IDE). (×1, 27.10.2026)

@@ -20,4 +20,4 @@ Java и установка — `tech/java.md`; WSL и окончания стр�
   «не видит» соседний (`package … does not exist`) → проект на `/mnt/c`, жив Windows-демон (IntelliJ, `gradlew.bat`) и
   держит замки в `<repo>/.gradle/` → `cmd.exe /c "set JAVA_HOME=<Windows-JDK>&& gradlew.bat --stop"`; демоны другой Java
   `--stop` не видит → `Stop-Process` по `GradleDaemon` в `Get-CimInstance Win32_Process`. Одну папку из Windows и WSL
-  одновременно не собирать.
+  одновременно не собирать. (×2, 27.10.2026)
