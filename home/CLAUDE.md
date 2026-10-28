@@ -41,7 +41,7 @@
 
 ## Коды файлов и утилиты
 
-Дерево с размерами — `~/.claude/claude-config/README.md`.
+Дерево с размерами — `~/.claude/claude-config/docs/structure.md`.
 
 - **Профиль** `USER` — `~/.claude/user.md`; **фирма** `FIRM` — `private/firms/<фирма>.md` (оба не в git, шаблоны —
   `personal/templates/`).

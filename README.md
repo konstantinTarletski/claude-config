@@ -90,152 +90,41 @@
 Здесь — общие правила и скиллы; в `~/.claude` — только ссылки сюда (`install.sh`). Личное — в `~/.claude/private`.
 Правила проекта — в самом проекте, скрыты от git. Всё — обычные markdown-файлы: открыл, прочитал, поправил.
 
-## Что где
-
-Как читать правила (`RULES`: номера `ФАЙЛ.РАЗДЕЛ.N`, профиль, проект, версии) — [`home/CLAUDE.md`](home/CLAUDE.md);
-как их вести и переводить проекты на новую версию — скилл `home/personal/skills/rules/`. Дерево — ниже. Версии — теги
-`v1.0`, `v2.0`…, что поменялось — [`CHANGELOG.md`](CHANGELOG.md).
-
-**Профиль** — всё «про меня»: кто я, как общаться и работать, разрешения, система и инструменты, доступы
-машины, папки, мои события. Файл `~/.claude/private/users/<имя>_<фирма>.md` — свой на каждое окружение, по шаблону
-`home/personal/templates/user.md`; активный — симлинк `~/.claude/user.md`, его создаёт `install.sh`. Правила ссылаются
-на профиль по номеру (`USER.PREF.1`), сами фактов о человеке не держат.
-
-**Фирма** — `~/.claude/private/firms/<фирма>.md` по шаблону `templates/firm.md`, подключается из профиля: своя
-фирма и клиенты — проекты (с синонимами), репозитории, системы (есть / нет доступа / не проверено, адрес, имя токена).
-
-**Профиль, фирма и настройки — вне репозитория**, в `~/.claude/private`: репозиторий публичный. В WSL — ссылка на
-папку Windows (`./install.sh --private /mnt/c/Users/<user>/.claude/private`): те же файлы видны и из Windows. Бэкап и
-перенос на другую машину — сам.
-
-### Дерево (размеры — для контроля, `RULES.SIZE`)
-
-```
-~/.claude/                                         # симлинки, все — через claude-config (путь в одном месте)
-├── claude-config                                  # ссылка на этот репозиторий — ЕДИНСТВЕННОЕ место с путём к нему
-├── CLAUDE.md                              6.9 КБ  # RULES (как читать), коды файлов и утилиты, @-импорты
-├── user.md       USER                             # симлинк на активный профиль (RULES.USER.1)
-├── private/                                       # ЛИЧНОЕ — вне репозитория (папка или ссылка, install.sh --private)
-│   ├── users/                                     # ПРОФИЛИ; @ только активный (через user.md)
-│   │   ├── <имя>_<фирма>.md            ~13.0 КБ   # я и окружение: ABOUT PREF WORK PERM SYS DEV ACC FOLD EVENT OFF
-│   │   └── <имя>_<фирма>.settings.json            # настройки Claude Code — симлинк ~/.claude/settings.json
-│   └── firms/                                     # ФИРМЫ; @ из профиля (RULES.USER.2)
-│       └── <фирма>.md          FIRM     ~6.8 КБ   # своя фирма и клиенты: проекты, репозитории, системы
-├── personal/                                      # ПЕРЕНОСИМОЕ (RULES.PORT)
-│   ├── rules/                                     # КАК РАБОТАЕМ — @, всегда
-│   │   ├── comm.md       COMM            5.6 КБ   # перевод, форма ответа, учёба, объяснения, вопросы, «пошло не так»
-│   │   ├── work.md       WORK            4.7 КБ   # что всегда: ветка, коммит, фоновые прогоны, сборка, ревью
-│   │   ├── safe.md       SAFE            1.7 КБ   # секреты, папки пользователя, удаление, правка файлов
-│   │   ├── files.md      FILES           6.6 КБ   # что куда писать, какие грабли записывать, документы задач, утилиты
-│   │   └── integ.md      INTEG           3.0 КБ   # токены, VPN, что не видно в тикете и в wiki
-│   ├── tech/                                      # ТЕХНОЛОГИИ — @, всегда: SETUP / RULE / TRAP
-│   │   ├── code.md       CODE            4.0 КБ   # общее для любого кода + журнал замечаний ревью
-│   │   ├── java.md       JAVA            4.0 КБ   # sdkman; MapStruct; Jackson 3, логи в тестах (бэк)
-│   │   ├── gradle.md     GRADL           1.9 КБ   # gradlew в WSL, отчёты, Lombok, Windows-демон (бэк)
-│   │   ├── api.md        API             0.6 КБ   # OpenAPI: map-ключи, тексты ошибок                  (бэк+фронт)
-│   │   ├── node.md       NODE            1.2 КБ   # nvm; node_modules из Windows                     (фронт)
-│   │   ├── ng.md         NG              0.6 КБ   # effect/untracked                                       (фронт)
-│   │   ├── git.md        GIT             1.7 КБ   # CRLF, HTTPS из WSL, коммит из cmd, ignored-файл при смене ветки
-│   │   ├── wsl.md        WSL             1.9 КБ   # окружение; localhost, симлинки, форматтер
-│   │   ├── tls.md        TLS             0.6 КБ   # PKIX в чужом сервисе
-│   │   └── sql.md        SQL             1.9 КБ   # Flyway: удалённый R__, правка V; PG: пояс JVM (бэк)
-│   ├── tools/                                     # УТИЛИТЫ (FILES.TOOLS) — не грузятся, запускаются
-│   │   ├── jira.py                                # тикет текстом, --attach, --changelog
-│   │   ├── jira-worklog.py                        # журнал часов → worklog Jira один в один, сверка (/timelog-askend)
-│   │   ├── wiki.py                                # страница → текст с пометками [+новое+] ~~убрано~~, вложения
-│   │   ├── bb-pr.py                               # PR: статус, ревьюеры, сборка, комментарии
-│   │   ├── test-count.sh                          # тесты в JUnit-отчётах и их свежесть
-│   │   ├── with-token.sh                          # команда с токеном из ~/.bashrc (значение не печатается)
-│   │   ├── session-time.py                        # часы по сессии: разбор / реализация (для /estimate)
-│   │   └── flyway-checksum.py                     # контрольная сумма миграции
-│   ├── skills/<имя>/SKILL.md                      # ПРОЦЕДУРЫ по вызову: rules (ведение правил + переезд версий:
-│   │                                              #   v1-to-v2.md … v2.2-to-v3.0.md), ticket (по шагам), estimate,
-│   │                                              #   commit-message, review-lessons, timelog-askend
-│   ├── statusline/                                # скрипт строки состояния
-│   └── templates/                                 # user.md — профиль; firm.md — фирма; settings.json — настройки
-│                                                  #   Claude Code (разрешения, тема); ticket.md — документ задачи;
-│                                                  #   timelog-askend.md — часы проекта; project/ — заготовка
-└── projects/<проект>/memory/                      # память ассистента (контекст разговоров, не факты — они в USER)
-
-<repo>/                                            # скрыто через .git/info/exclude
-├── CLAUDE.md                                      # метка версии; PROJ.*; @-импорты .claude/*.md (или главного группы)
-└── .claude/
-    ├── work.md  integ.md  …                       # отличия от общих правил — те же номера (RULES.PROJ)
-    ├── tech/<тех>.md                              # проектные SETUP / RULE / TRAP
-    ├── review.md                                  # замечания ревью (WORK.REVW)
-    ├── <скилл>.md                                 # настройки скилла (timelog-askend.md) — без @
-    ├── tools/  skills/                            # утилиты и процедуры проекта
-    └── tickets/                                   # <KEY>.md, <KEY>.in.*, <KEY>.out.* (FILES.DOCS)
-```
-
-Всего грузится (`CLAUDE.md` + `user.md` + файл фирмы + `rules/` + `tech/`): **67.7 КБ** (+ `CLAUDE.md` и `.claude/` текущего проекта).
-
-**Проектного здесь нет.** `CLAUDE.md` проекта (метка версии, `PROJ.*`), `.claude/work.md`, `.claude/integ.md`,
-`.claude/tech/*.md`, документы по задачам `.claude/tickets/`, `.sdkmanrc` / `.nvmrc` — лежат обычными файлами в самом
-проекте и скрыты от git через `<repo>/.git/info/exclude`. Проект на старой версии — ассистент предложит переезд
-(`RULES.MIGR`).
-
-**После `git pull` новой версии — обязательно `./install.sh`** (новые скиллы, ссылки). Переход со старой версии —
-`home/personal/skills/rules/v*-to-v*.md`, по очереди; свои проекты ассистент предложит перевести сам (`RULES.MIGR.1`).
-
-Секретов здесь тоже нет: токены — в `~/.bashrc`, доступы к Artifactory — в `~/.gradle/gradle.properties`.
-
-## Развернуть на новой машине
+## 🚀 Быстрый старт
 
 ```bash
-git clone git@github.com:konstantinTarletski/claude-config.git /mnt/c/code/claude-config
-cd /mnt/c/code/claude-config
-./install.sh --dry-run   # показать, что будет сделано
-./install.sh                              # профилей несколько — спросит, с каким работаем
-./install.sh --profile <имя>_<фирма>      # или выбрать/сменить профиль сразу
-./install.sh --private /mnt/c/Users/<user>/.claude/private   # WSL: личное — в папке Windows
-./install.sh --migrate                    # переход с 2.x: скопировать профили и фирмы из репозитория в private
+git clone git@github.com:konstantinTarletski/claude-config.git
+cd claude-config
+./install.sh --dry-run      # показать, что будет сделано
+./install.sh                # поставить ссылки в ~/.claude
 ```
 
-Репозиторий можно положить куда угодно: путь к нему знает только ссылка `~/.claude/claude-config` (остальные ссылки —
-через неё). Переложил — `./install.sh` из нового места.
+Дальше — свой профиль по шаблону `home/personal/templates/user.md` (подробно — [установка](docs/install.md)).
 
-Свой профиль, настройки (`<имя>_<фирма>.settings.json`) и файл фирмы — перенести со старой машины (они вне репозитория) или создать по шаблонам:
-`home/personal/templates/user.md` → `~/.claude/private/users/<имя>_<фирма>.md`, `templates/firm.md` →
-`~/.claude/private/firms/<фирма>.md` (версии — проверить командами, `RULES.USER.1`), потом `./install.sh`. Повторный запуск безопасен. Существующий файл, совпадающий с копией, заменяется симлинком;
-отличающийся — сохраняется как `<файл>.bak-<дата>`.
+## 🗂️ Что где
 
-## Разрешения (`~/.claude/settings.json`)
+```
+claude-config/
+├── home/
+│   ├── CLAUDE.md          как читать правила, список файлов
+│   └── personal/
+│       ├── rules/         как работаем: общение, задача, безопасность, что куда, внешние системы
+│       ├── tech/          технологии: установка, как писать, грабли
+│       ├── skills/        процедуры по вызову: /ticket, /estimate, /commit-message, /review-lessons, /rules
+│       ├── tools/         утилиты: тикет и wiki текстом, токен из .bashrc, часы по сессии …
+│       └── templates/     шаблоны профиля, фирмы, документа задачи, проекта
+├── docs/                  техническое описание
+├── install.sh
+└── CHANGELOG.md
 
-**Рядом с профилем**: `~/.claude/private/users/<имя>_<фирма>.settings.json` (вне репозитория — там пути и имена
-токенов), `~/.claude/settings.json` — симлинк на него (`install.sh`). Нет своего — копия шаблона
-`home/personal/templates/settings.json`, подставить пути и токены. В шаблоне:
-
-- `Edit(...)` для заметок (`.claude/**`, `CLAUDE.md` проектов, `claude-config`, `~/.claude/personal`) — пишутся без
-  запроса;
-- `Bash(...)` для команд только на чтение (`git status/log/diff/show`, `ls`, `grep`, `head`, `tail`, `sed -n`,
-  Windows-git `status/diff/log/fetch`, `curl` к Jira с токеном);
-- `ask` для `.claude/settings*.json` проектов — чтобы ассистент не мог сам себе расширить разрешения;
-- строка состояния и тема `dark` (тёмный фон терминала; `light` даёт тёмно-синий, которого на тёмном не видно).
-
-`/config` пишет через симлинк, ссылка остаётся (проверено 21.10.2026, Claude Code на WSL). Если когда-нибудь
-перепишет её обычным файлом — `./install.sh` это заметит и скажет.
-
-## Строка состояния (claude-pace)
-
-[claude-pace](https://github.com/Astro-Han/claude-pace) (MIT) — однофайловый bash-скрипт: модель и контекст, ветка
-и дифф, расход квоты за 5 часов и 7 дней и «темп» (успеваю ли в лимит). Сети не использует, пишет только кеш
-в `~/.cache/claude-pace`. Копия скрипта — `home/personal/statusline/claude-pace.sh` (release от 30.09.2026,
-sha256 `0dd4fecb…a020b`), доступна как `~/.claude/personal/statusline/claude-pace.sh` через симлинк `personal`.
-
-На новой машине:
-
-```bash
-sudo apt-get install -y jq      # единственная зависимость; без неё в строке «[needs jq]»
+~/.claude/private/         личное, вне репозитория: профиль, фирма, настройки
 ```
 
-Подключение (`statusLine`) — уже в шаблоне `templates/settings.json`.
+## 📚 Подробнее
 
-Обновить скрипт: скачать `https://github.com/Astro-Han/claude-pace/releases/latest/download/claude-pace.sh` во
-временную папку, просмотреть дифф с текущей копией (нет ли сети, `eval`, записи вне кеша) и только потом заменить.
-
-## Ограничения
-
-- Симлинки — WSL-шные: из WSL читаются, Windows-программы их не видят. Настоящие Windows-симлинки
-  (`mklink`) требуют прав администратора или Developer Mode. Claude Code запускается из WSL.
-- Репозиторий хранится с LF (`.gitattributes`), одинаково для WSL- и Windows-git.
+- [Как устроено](docs/how-it-works.md) — правила, профиль, фирма, личное вне репозитория
+- [Установка и обновление](docs/install.md) — `install.sh`, новая машина, переход с прошлой версии, ограничения
+- [Дерево файлов](docs/structure.md) — все файлы с размерами и что в каждом
+- [Настройки Claude Code](docs/settings.md) — разрешения, тема, `settings.json`
+- [Строка состояния](docs/statusline.md) — claude-pace
+- [История версий](CHANGELOG.md)
