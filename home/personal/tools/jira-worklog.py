@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Часы из журнала (/timelog-askend) — в worklog Jira, один в один: тот же день, те же часы, тот же текст.
+"""Часы из журнала (/timelog, журнал с двумя трекерами) — в worklog Jira, один в один: тот же день, те же часы, тот же текст.
 
   jira-worklog.py <ДД.ММ> [<ДД.ММ> …] --journal <файл> --ours <наша задача> --side client|ours
                   --url <https://jira…> --token-env <ПЕРЕМЕННАЯ> --zone <Europe/…> [--email <e-mail>]

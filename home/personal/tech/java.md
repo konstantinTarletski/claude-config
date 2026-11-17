@@ -33,3 +33,8 @@
 - **JAVA.TRAP.6** [MapStruct] `@Mapping(target = "x.y")` → у `x` остальные поля пустые, при пустых источниках `{}`
   вместо `null` → вложенные `@Mapping` отключают автомаппинг `x` → для `x` свой метод маппинга, `null` — `default`-
   обёрткой.
+- **JAVA.TRAP.7** [Testcontainers 1.20.3, Docker Engine 29] Локально все интеграционные тесты: «Could not find a valid
+  Docker environment», выше в логе «client version 1.32 is too old», а в CI зелёные → docker-java внутри
+  Testcontainers 1.x говорит по API 1.32, Docker 29 принимает от 1.41 → без правки проекта:
+  `JAVA_TOOL_OPTIONS=-Dapi.version=1.44 ./gradlew cleanTest test` (`cleanTest` — иначе Gradle сочтёт тесты
+  актуальными); в проекте — Testcontainers 1.21.4+ или 2.x. (×1, 12.11.2026)
