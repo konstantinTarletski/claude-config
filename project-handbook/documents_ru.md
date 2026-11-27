@@ -29,8 +29,10 @@ merge уходит в `main` вместе с ним:
 
 | Файл | Что в нём |
 |---|---|
-| `tests/backend.md` (`frontend.md`, `e2e.md`) | план тестов части |
-| `tests/backend-report-<ГГГГ-ММ-ДД>.md` | отчёт `backend-test-flow_ru.md → 3. Отчёт` |
+| `tests/backend-plan-<шаг или тема>-<ГГГГ-ММ-ДД>.md` | план работы по тестам — `backend-test-flow_ru.md → 4. План и работа → 4.3` |
+| `tests/backend-violations-<ГГГГ-ММ-ДД>.md` | отчёт по нарушениям — `backend-test-flow_ru.md → 3. Отчёты → 3.1` |
+| `tests/backend-report.md` | общий отчёт — `backend-test-flow_ru.md → 3. Отчёты → 3.2` |
+| `tests/frontend.md`, `tests/e2e.md` | план тестов фронтенда и e2e |
 | `project-issues.md` | проблемы этой части; строка `Tests:` — тест, который её закрепляет; тесты на удаление |
 
 **Проблемы проекта:**
